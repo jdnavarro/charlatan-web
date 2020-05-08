@@ -1,9 +1,11 @@
 import React from "react";
 
-import { TextField, Button } from "@material-ui/core";
+import { Toolbar, TextField, Button } from "@material-ui/core";
 import SaveIcon from "@material-ui/icons/Save";
 
-export default () => {
+import TopBar from "./TopBar";
+
+export default (props: any) => {
   const [title, setTitle] = React.useState("");
   const [url, setUrl] = React.useState("");
 
@@ -26,29 +28,36 @@ export default () => {
   };
 
   return (
-    <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-      <TextField
-        id="podcast-name"
-        label="Podcast Name"
-        variant="outlined"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-      <TextField
-        id="podcast-url"
-        label="Podcast URL"
-        variant="outlined"
-        value={url}
-        onChange={(e) => setUrl(e.target.value)}
-      />
-      <Button
-        type="submit"
-        variant="contained"
-        color="primary"
-        startIcon={<SaveIcon />}
-      >
-        Add
-      </Button>
-    </form>
+    <React.Fragment>
+      <TopBar onClick={props.onClick} />
+
+      <main>
+        <Toolbar />
+        <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+          <TextField
+            id="podcast-name"
+            label="Podcast Name"
+            variant="outlined"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <TextField
+            id="podcast-url"
+            label="Podcast URL"
+            variant="outlined"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            startIcon={<SaveIcon />}
+          >
+            Add
+          </Button>
+        </form>
+      </main>
+    </React.Fragment>
   );
 };
