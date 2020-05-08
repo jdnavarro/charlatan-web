@@ -16,7 +16,7 @@ export default (props: any) => {
         >
           <MenuIcon />
         </IconButton>
-        <Typography variant="h6">Podcasts</Typography>
+        <Typography variant="h6">{props.title}</Typography>
       </Toolbar>
     </AppBar>
   );

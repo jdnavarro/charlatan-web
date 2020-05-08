@@ -2,11 +2,13 @@
 import { jsx } from "@emotion/core";
 
 import React from "react";
+import { Router } from "@reach/router";
 
 import { Container, CssBaseline } from "@material-ui/core";
 
 import Nav from "./Nav";
-import Podcast from "./Podcast";
+import Podcasts from "./Podcast";
+import Episodes from "./Episodes";
 
 export default () => {
   const [open, setOpen] = React.useState(false);
@@ -24,7 +26,10 @@ export default () => {
       <CssBaseline />
       <Container maxWidth="sm">
         <Nav onClick={handleDrawerClose} open={open} />
-        <Podcast onClick={handleDrawerOpen} />
+        <Router>
+          <Episodes path="/" onClick={handleDrawerOpen} />
+          <Podcasts path="podcasts" onClick={handleDrawerOpen} />
+        </Router>
       </Container>
     </React.Fragment>
   );
