@@ -25,10 +25,10 @@ export default () => {
     <React.Fragment>
       <CssBaseline />
       <Container maxWidth="sm">
-        <Nav onClick={handleDrawerClose} open={open} />
+        <Nav drawerHandler={handleDrawerClose} drawerState={open} />
         <Router>
-          <Episodes path="/" onClick={handleDrawerOpen} />
-          <Podcasts path="podcasts" onClick={handleDrawerOpen} />
+          <Episodes path="/" drawerHandler={handleDrawerOpen} />
+          <Podcasts path="podcasts" drawerHandler={handleDrawerOpen} />
         </Router>
       </Container>
     </React.Fragment>

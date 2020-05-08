@@ -5,12 +5,16 @@ import SaveIcon from "@material-ui/icons/Save";
 
 import TopBar from "./TopBar";
 
-export default (props: any) => {
+interface PodcastProps {
+  drawerHandler: () => void;
+  path: string;
+}
+
+export default (props: PodcastProps) => {
   const [title, setTitle] = React.useState("");
   const [url, setUrl] = React.useState("");
 
-  const handleSubmit = (event: any) => {
-    event.preventDefault();
+  const handleSubmit = () => {
     fetch("http://127.0.0.1:3030/podcasts", {
       method: "POST",
       headers: {
@@ -29,7 +33,7 @@ export default (props: any) => {
 
   return (
     <React.Fragment>
-      <TopBar onClick={props.onClick} />
+      <TopBar drawerHandler={props.drawerHandler} />
 
       <main>
         <Toolbar />

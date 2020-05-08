@@ -12,7 +12,13 @@ import {
 import AppsIcon from "@material-ui/icons/Apps";
 import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
 
-const ListItemLink = (props: any) => {
+interface ListItemLinkProps {
+  icon?: React.ReactElement;
+  primary: string;
+  to: string;
+}
+
+const ListItemLink = (props: ListItemLinkProps) => {
   const { icon, primary, to } = props;
 
   const renderLink = React.useMemo(
@@ -31,8 +37,13 @@ const ListItemLink = (props: any) => {
   );
 };
 
-export default (props: any) => (
-  <Drawer onClick={props.onClick} open={props.open}>
+interface NavProps {
+  drawerHandler: () => void;
+  drawerState: boolean;
+}
+
+export default (props: NavProps) => (
+  <Drawer onClick={props.drawerHandler} open={props.drawerState}>
     <Divider />
     <List>
       <ListItemLink

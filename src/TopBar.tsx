@@ -4,6 +4,11 @@ import { AppBar, Toolbar, Typography, IconButton } from "@material-ui/core";
 
 import MenuIcon from "@material-ui/icons/Menu";
 
+interface TopBarProps {
+    drawerHandler: () => void;
+    title: string;
+}
+
 export default (props: any) => {
   return (
     <AppBar>
@@ -12,7 +17,7 @@ export default (props: any) => {
           edge="start"
           color="inherit"
           aria-label="menu"
-          onClick={props.onClick}
+          onClick={props.drawerHandler}
         >
           <MenuIcon />
         </IconButton>

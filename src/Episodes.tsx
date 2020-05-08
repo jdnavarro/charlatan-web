@@ -4,10 +4,15 @@ import { Toolbar } from "@material-ui/core";
 
 import TopBar from "./TopBar";
 
-export default (props: any) => {
+interface EpisodesProps {
+  drawerHandler: () => void;
+  path: string;
+}
+
+export default (props: EpisodesProps) => {
   return (
     <React.Fragment>
-      <TopBar onClick={props.onClick} title="Episodes" />
+      <TopBar drawerHandler={props.drawerHandler} title="Episodes" />
       <main>
         <Toolbar />
         <p>Hola</p>
