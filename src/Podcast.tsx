@@ -15,7 +15,7 @@ export default (props: PodcastProps) => {
   const [url, setUrl] = React.useState("");
 
   const handleSubmit = () => {
-    fetch("http://127.0.0.1:3030/podcasts", {
+    fetch("/podcasts", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

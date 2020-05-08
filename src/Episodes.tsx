@@ -25,7 +25,7 @@ export default (props: EpisodesProps) => {
   const [episodes, setEpisodes] = React.useState([]);
 
   React.useEffect(() => {
-    fetch("http://127.0.0.1:3030/episodes")
+    fetch("/episodes")
       .then((response) => response.json())
       .then((data) => {
         setEpisodes(data);
