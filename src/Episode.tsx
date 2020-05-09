@@ -38,7 +38,7 @@ export default (props: EpisodesProps) => {
       <main>
         <Toolbar />
         <List>
-          {episodes.map((item: any) => (
+          {episodes.map((item: EpisodeItemProp) => (
             <EpisodeItem title={item.title} />
           ))}
         </List>
