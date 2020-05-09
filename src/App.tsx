@@ -10,7 +10,7 @@ import Player from "./Player";
 
 export default () => {
   const [open, setOpen] = React.useState(false);
-  const [playing, setPlaying] = React.useState({ episode: null });
+  const [playing, setPlaying] = React.useState({ episode: null, audio: null });
 
   const handleDrawerOpen = () => {
     setOpen(true);

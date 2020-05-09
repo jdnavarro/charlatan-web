@@ -38,12 +38,26 @@ export default (props: any) => {
 
   const [episodes, setEpisodes] = React.useState([]);
 
-  const playingIcon = (episode_id: string) => {
+  const playingIcon = (episode_id: string, url: string) => {
     if (episode_id === playing.episode) {
-      return <PauseIcon onClick={() => setPlaying({ episode: null })} />;
+      return (
+        <PauseIcon
+          onClick={() => {
+            playing.audio.pause();
+            setPlaying({ episode: null, audio: null });
+          }}
+        />
+      );
     } else {
       return (
-        <PlayArrowIcon onClick={() => setPlaying({ episode: episode_id })} />
+        <PlayArrowIcon
+          onClick={() => {
+            let audioElement = new Audio(url);
+            setPlaying({ episode: episode_id, audio: audioElement });
+            console.log(playing);
+            audioElement.play();
+          }}
+        />
       );
     }
   };
@@ -62,11 +76,11 @@ export default (props: any) => {
       <main>
         <Toolbar />
         <List>
-          {episodes.map((item: EpisodeItemProp) => (
+          {episodes.map((item: any) => (
             <EpisodeItem
               id={item.id}
               title={item.title}
-              icon={playingIcon(item.id)}
+              icon={playingIcon(item.id, item.url)}
             />
           ))}
         </List>
