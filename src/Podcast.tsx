@@ -3,18 +3,20 @@ import React from "react";
 import { Toolbar, TextField, Button } from "@material-ui/core";
 import SaveIcon from "@material-ui/icons/Save";
 
-import TopBar from "./TopBar";
+import { TopBar } from "./TopBar";
 
-interface PodcastProps {
-  drawerHandler: () => void;
+interface Props {
+  openDrawer: () => void;
   path: string;
 }
 
-export default (props: PodcastProps) => {
-  const [title, setTitle] = React.useState("");
-  const [url, setUrl] = React.useState("");
+export default (props: Props) => {
+  const { openDrawer } = props;
 
-  const handleSubmit = () => {
+  const [title, setTitle] = React.useState<string>("");
+  const [url, setUrl] = React.useState<string>("");
+
+  const handleSubmit = (): void => {
     fetch("/podcasts", {
       method: "POST",
       headers: {
@@ -33,7 +35,7 @@ export default (props: PodcastProps) => {
 
   return (
     <React.Fragment>
-      <TopBar drawerHandler={props.drawerHandler} />
+      <TopBar openDrawer={openDrawer} title="Podcasts" />
 
       <main>
         <Toolbar />

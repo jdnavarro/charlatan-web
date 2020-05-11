@@ -3,40 +3,42 @@ import { Router } from "@reach/router";
 
 import { Container, CssBaseline } from "@material-ui/core";
 
-import Nav from "./Nav";
+import { Nav } from "./Nav";
 import Podcasts from "./Podcast";
-import Episodes from "./Episode";
-import Player from "./Player";
+import { Episodes } from "./Episode";
+import { Episode } from "./episode";
+import { Player } from "./Player";
 
-export default () => {
-  const [open, setOpen] = React.useState(false);
-  const [currentEpisode, setCurrentEpisode] = React.useState({
+export const App: React.FC = () => {
+  const [drawer, setDrawer] = React.useState<boolean>(false);
+
+  const [currentEpisode, setCurrentEpisode] = React.useState<Episode>({
     id: 9,
     title: "#1464 - Duncan Trussell",
     src: "http://traffic.libsyn.com/joeroganexp/p1464.mp3?dest-id=19997",
   });
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
+  const openDrawer = (): void => {
+    setDrawer(true);
   };
 
-  const handleDrawerClose = () => {
-    setOpen(false);
+  const closeDrawer = (): void => {
+    setDrawer(false);
   };
 
   return (
     <React.Fragment>
       <CssBaseline />
       <Container maxWidth="sm">
-        <Nav drawerHandler={handleDrawerClose} drawerState={open} />
+        <Nav closeDrawer={closeDrawer} drawer={drawer} />
         <Router>
           <Episodes
             path="/"
-            drawerHandler={handleDrawerOpen}
+            openDrawer={openDrawer}
             currentEpisode={currentEpisode}
             setCurrentEpisode={setCurrentEpisode}
           />
-          <Podcasts path="podcasts" drawerHandler={handleDrawerOpen} />
+          <Podcasts path="podcasts" openDrawer={openDrawer} />
         </Router>
         <Player currentEpisode={currentEpisode} />
       </Container>

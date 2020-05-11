@@ -9,17 +9,41 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@material-ui/core";
-import AppsIcon from "@material-ui/icons/Apps";
-import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
+import {
+  Apps as AppsIcon,
+  FormatListBulleted as FormatListBulletedIcon,
+} from "@material-ui/icons";
 
-interface ListItemLinkProps {
-  icon?: React.ReactElement;
-  primary: string;
-  to: string;
+interface NavProps {
+  closeDrawer: () => void;
+  drawer: boolean;
 }
 
-const ListItemLink = (props: ListItemLinkProps) => {
-  const { icon, primary, to } = props;
+export const Nav: React.FC<NavProps> = (props) => {
+  const { closeDrawer, drawer } = props;
+  return (
+    <Drawer onClick={closeDrawer} open={drawer}>
+      <Divider />
+      <List>
+        <ListItemLink
+          to="/"
+          primary="Episodes"
+          icon={<FormatListBulletedIcon />}
+        />
+        <ListItemLink to="/podcasts" primary="Podcasts" icon={<AppsIcon />} />
+      </List>
+    </Drawer>
+  );
+};
+
+interface ListItemLinkProps {
+  primary: string;
+  to: string;
+  icon: React.ReactElement;
+}
+
+const ListItemLink: React.FC<ListItemLinkProps> = (props) => {
+  const { primary, to, icon } = props;
 
   const renderLink = React.useMemo(
     () =>
@@ -31,27 +55,8 @@ const ListItemLink = (props: ListItemLinkProps) => {
 
   return (
     <ListItem button component={renderLink}>
-      {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
+      <ListItemIcon>{icon}</ListItemIcon>
       <ListItemText primary={primary} />
     </ListItem>
   );
 };
-
-interface NavProps {
-  drawerHandler: () => void;
-  drawerState: boolean;
-}
-
-export default (props: NavProps) => (
-  <Drawer onClick={props.drawerHandler} open={props.drawerState}>
-    <Divider />
-    <List>
-      <ListItemLink
-        to="/"
-        primary="Episodes"
-        icon={<FormatListBulletedIcon />}
-      />
-      <ListItemLink to="/podcasts" primary="Podcasts" icon={<AppsIcon />} />
-    </List>
-  </Drawer>
-);

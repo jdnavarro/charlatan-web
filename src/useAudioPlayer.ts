@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
-export default () => {
-  const [playing, setPlaying] = useState(false);
+export const useAudioPlayer = () => {
+  const [playing, setPlaying] = useState<boolean>(false);
 
   useEffect(() => {
     const audio = document.getElementById("audio") as HTMLAudioElement;

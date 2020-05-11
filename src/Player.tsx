@@ -12,18 +12,10 @@ import {
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
 
-import useAudioPlayer from "./useAudioPlayer";
+import { useAudioPlayer } from "./useAudioPlayer";
+import { Episode } from "./episode";
 
-const ElevationScroll = (props: any) => {
-  const { children } = props;
-  const trigger = useScrollTrigger({
-    disableHysteresis: true,
-    threshold: 0,
-  });
-  return React.cloneElement(children, { elevation: trigger ? 4 : 0 });
-};
-
-export default (props: any) => {
+export const Player: React.FC<{ currentEpisode: Episode }> = (props) => {
   const { title, src } = props.currentEpisode;
   const { playing, setPlaying } = useAudioPlayer();
   return (
@@ -59,4 +51,13 @@ export default (props: any) => {
       </AppBar>
     </ElevationScroll>
   );
+};
+
+const ElevationScroll: React.FC<{ children: React.ReactElement }> = (props) => {
+  const { children } = props;
+  const trigger = useScrollTrigger({
+    disableHysteresis: true,
+    threshold: 0,
+  });
+  return React.cloneElement(children, { elevation: trigger ? 4 : 0 });
 };
