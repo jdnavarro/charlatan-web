@@ -5,6 +5,7 @@ import React from "react";
 import { Toolbar, AppBar, Fab, useScrollTrigger } from "@material-ui/core";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
+import useAudioPlayer from "./useAudioPlayer";
 
 const ElevationScroll = (props: any) => {
   const { children } = props;
@@ -16,12 +17,7 @@ const ElevationScroll = (props: any) => {
 };
 
 export default () => {
-  const [play, setPlay] = React.useState(false);
-
-  const handlePlay = () => {
-    setPlay(!play);
-  };
-
+  const { playing, setPlaying } = useAudioPlayer();
   return (
     <ElevationScroll>
       <AppBar
@@ -33,8 +29,10 @@ export default () => {
         }}
       >
         <Toolbar>
+          <audio id="audio" preload="none">
+            <source src="http://traffic.libsyn.com/joeroganexp/p1464.mp3?dest-id=19997" />
+          </audio>
           <Fab
-            onClick={handlePlay}
             color="secondary"
             aria-label="play"
             css={{
@@ -45,7 +43,11 @@ export default () => {
               margin: "0 auto",
             }}
           >
-            {play ? <PlayArrowIcon /> : <PauseIcon />}
+            {playing ? (
+              <PauseIcon onClick={() => setPlaying(false)} />
+            ) : (
+              <PlayArrowIcon onClick={() => setPlaying(true)} />
+            )}
           </Fab>
         </Toolbar>
       </AppBar>

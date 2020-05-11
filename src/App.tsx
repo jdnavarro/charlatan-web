@@ -10,7 +10,6 @@ import Player from "./Player";
 
 export default () => {
   const [open, setOpen] = React.useState(false);
-  const [playing, setPlaying] = React.useState({ episode: null, audio: null });
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -26,12 +25,7 @@ export default () => {
       <Container maxWidth="sm">
         <Nav drawerHandler={handleDrawerClose} drawerState={open} />
         <Router>
-          <Episodes
-            path="/"
-            drawerHandler={handleDrawerOpen}
-            playing={playing}
-            setPlaying={setPlaying}
-          />
+          <Episodes path="/" drawerHandler={handleDrawerOpen} />
           <Podcasts path="podcasts" drawerHandler={handleDrawerOpen} />
         </Router>
         <Player />
