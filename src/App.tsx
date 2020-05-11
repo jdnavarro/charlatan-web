@@ -10,6 +10,11 @@ import Player from "./Player";
 
 export default () => {
   const [open, setOpen] = React.useState(false);
+  const [currentEpisode, setCurrentEpisode] = React.useState({
+    id: 9,
+    title: "#1464 - Duncan Trussell",
+    src: "http://traffic.libsyn.com/joeroganexp/p1464.mp3?dest-id=19997",
+  });
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -25,10 +30,15 @@ export default () => {
       <Container maxWidth="sm">
         <Nav drawerHandler={handleDrawerClose} drawerState={open} />
         <Router>
-          <Episodes path="/" drawerHandler={handleDrawerOpen} />
+          <Episodes
+            path="/"
+            drawerHandler={handleDrawerOpen}
+            currentEpisode={currentEpisode}
+            setCurrentEpisode={setCurrentEpisode}
+          />
           <Podcasts path="podcasts" drawerHandler={handleDrawerOpen} />
         </Router>
-        <Player />
+        <Player currentEpisode={currentEpisode} />
       </Container>
     </React.Fragment>
   );

@@ -2,9 +2,16 @@
 import { jsx } from "@emotion/core";
 import React from "react";
 
-import { Toolbar, AppBar, Fab, useScrollTrigger } from "@material-ui/core";
+import {
+  Toolbar,
+  AppBar,
+  Fab,
+  useScrollTrigger,
+  Typography,
+} from "@material-ui/core";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
+
 import useAudioPlayer from "./useAudioPlayer";
 
 const ElevationScroll = (props: any) => {
@@ -16,7 +23,8 @@ const ElevationScroll = (props: any) => {
   return React.cloneElement(children, { elevation: trigger ? 4 : 0 });
 };
 
-export default () => {
+export default (props: any) => {
+  const { title, src } = props.currentEpisode;
   const { playing, setPlaying } = useAudioPlayer();
   return (
     <ElevationScroll>
@@ -29,17 +37,15 @@ export default () => {
         }}
       >
         <Toolbar>
-          <audio id="audio" preload="none">
-            <source src="http://traffic.libsyn.com/joeroganexp/p1464.mp3?dest-id=19997" />
-          </audio>
+          <audio id="audio" preload="none" src={src}></audio>
+          <Typography variant="h6">{title}</Typography>
           <Fab
             color="secondary"
             aria-label="play"
             css={{
               position: "absolute",
               zIndex: 1,
-              left: 0,
-              right: 0,
+              right: "5%",
               margin: "0 auto",
             }}
           >
