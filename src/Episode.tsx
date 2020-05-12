@@ -53,8 +53,8 @@ export const Episodes: React.FC<Props> = (props) => {
       <main>
         <Toolbar />
         <List>
-          {episodes.map((item: Episode) => (
-            <EpisodeItem episode={item} />
+          {episodes.map((item: Episode, index: number) => (
+            <EpisodeItem episode={item} key={index} />
           ))}
         </List>
       </main>
