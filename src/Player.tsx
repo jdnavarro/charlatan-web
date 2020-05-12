@@ -40,12 +40,9 @@ export const Player: React.FC<{ currentEpisode: Episode }> = (props) => {
               right: "5%",
               margin: "0 auto",
             }}
+            onClick={() => (playing ? setPlaying(false) : setPlaying(true))}
           >
-            {playing ? (
-              <PauseIcon onClick={() => setPlaying(false)} />
-            ) : (
-              <PlayArrowIcon onClick={() => setPlaying(true)} />
-            )}
+            {playing ? <PauseIcon /> : <PlayArrowIcon />}
           </Fab>
         </Toolbar>
       </AppBar>
