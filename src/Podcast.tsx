@@ -13,8 +13,7 @@ interface Props {
 export default (props: Props) => {
   const { openDrawer } = props;
 
-  const [title, setTitle] = React.useState<string>("");
-  const [url, setUrl] = React.useState<string>("");
+  const [url, setUrl] = React.useState("");
 
   const handleSubmit = (): void => {
     fetch("/podcasts", {
@@ -22,9 +21,8 @@ export default (props: Props) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ title: title, url: url }),
+      body: JSON.stringify(url),
     })
-      .then((response) => response.json())
       .then((data) => {
         console.log("Success:", data);
       })
@@ -39,30 +37,22 @@ export default (props: Props) => {
 
       <main>
         <Toolbar />
-        <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-          <TextField
-            id="podcast-name"
-            label="Podcast Name"
-            variant="outlined"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <TextField
-            id="podcast-url"
-            label="Podcast URL"
-            variant="outlined"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-          />
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            startIcon={<SaveIcon />}
-          >
-            Add
-          </Button>
-        </form>
+        <TextField
+          id="podcast-url"
+          label="Podcast URL"
+          variant="outlined"
+          value={url}
+          onChange={(e) => setUrl(e.target.value)}
+        />
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          startIcon={<SaveIcon />}
+          onClick={handleSubmit}
+        >
+          Add
+        </Button>
       </main>
     </React.Fragment>
   );
