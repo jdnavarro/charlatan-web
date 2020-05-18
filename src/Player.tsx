@@ -13,21 +13,22 @@ import {
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
 
-import { useAudioPlayer } from "./useAudioPlayer";
+import { Audio } from "./Audio";
 import { Episode } from "./episode";
 
-export const Player: React.FC<{ currentEpisode: Episode }> = (props) => {
-  const { title, src } = props.currentEpisode;
+export const Player: React.FC<{
+  currentEpisode: Episode;
+  setCurrentEpisode: (e: Episode) => void;
+}> = (props) => {
+  const { currentEpisode, setCurrentEpisode } = props;
 
-  const {
-    playing,
-    setPlaying,
-    curTime,
-    duration,
-    setSeekTime,
-  } = useAudioPlayer();
+  const [playing, setPlaying] = React.useState(false);
 
-  const handleSeek = (event: any, newValue: number | number[]) => {
+  const [duration, setDuration] = React.useState(0);
+
+  const [seekTime, setSeekTime] = React.useState<number | null>(null);
+
+  const handleSeek = (_event: any, newValue: number | number[]) => {
     setSeekTime(newValue as number);
   };
 
@@ -42,15 +43,14 @@ export const Player: React.FC<{ currentEpisode: Episode }> = (props) => {
         }}
       >
         <Slider
-          value={curTime}
+          value={currentEpisode.progress}
           max={duration}
           aria-labelledby="continuous-slider"
           color="secondary"
           onChange={handleSeek}
         />
         <Toolbar>
-          <audio id="audio" preload="none" src={src}></audio>
-          <Typography variant="h6">{title}</Typography>
+          <Typography variant="h6">{currentEpisode.title}</Typography>
           <Fab
             color="secondary"
             aria-label="play"
@@ -64,6 +64,14 @@ export const Player: React.FC<{ currentEpisode: Episode }> = (props) => {
           >
             {playing ? <PauseIcon /> : <PlayArrowIcon />}
           </Fab>
+          <Audio
+            playing={playing}
+            currentEpisode={currentEpisode}
+            setCurrentEpisode={setCurrentEpisode}
+            setDuration={setDuration}
+            seekTime={seekTime}
+            setSeekTime={setSeekTime}
+          />
         </Toolbar>
       </AppBar>
     </ElevationScroll>

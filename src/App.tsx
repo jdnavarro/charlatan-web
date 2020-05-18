@@ -13,10 +13,13 @@ export const App: React.FC = () => {
   const [drawer, setDrawer] = React.useState<boolean>(false);
 
   const [currentEpisode, setCurrentEpisode] = React.useState<Episode>({
-    id: 9,
+    id: 14,
     title: "#1464 - Duncan Trussell",
     src: "http://traffic.libsyn.com/joeroganexp/p1464.mp3?dest-id=19997",
+    progress: 5000,
   });
+
+  console.log(currentEpisode);
 
   const openDrawer = (): void => {
     setDrawer(true);
@@ -40,7 +43,10 @@ export const App: React.FC = () => {
           />
           <Podcasts path="podcasts" openDrawer={openDrawer} />
         </Router>
-        <Player currentEpisode={currentEpisode} />
+        <Player
+          currentEpisode={currentEpisode}
+          setCurrentEpisode={setCurrentEpisode}
+        />
       </Container>
     </React.Fragment>
   );
