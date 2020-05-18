@@ -22,13 +22,7 @@ export const Episodes: React.FC<Props> = (props) => {
   React.useEffect(() => {
     fetch("/episodes")
       .then((response) => response.json())
-      .then((data) => {
-        const episodes = data.map((e: any) => {
-          return {
-            src: e.url,
-            ...e,
-          };
-        });
+      .then((episodes) => {
         setEpisodes(episodes);
       });
   }, []);
