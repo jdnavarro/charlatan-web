@@ -4,6 +4,7 @@ import { Toolbar, TextField, Button } from "@material-ui/core";
 import SaveIcon from "@material-ui/icons/Save";
 
 import { TopBar } from "./TopBar";
+import { API } from "./api";
 
 interface Props {
   openDrawer: () => void;
@@ -16,19 +17,7 @@ export default (props: Props) => {
   const [url, setUrl] = React.useState("");
 
   const handleSubmit = (): void => {
-    fetch("/podcasts", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(url),
-    })
-      .then((data) => {
-        console.log("Success:", data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+    API.podcast(url);
   };
 
   return (

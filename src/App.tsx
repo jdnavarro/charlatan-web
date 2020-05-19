@@ -8,6 +8,7 @@ import Podcasts from "./Podcast";
 import { Episodes } from "./Episode";
 import { Episode } from "./episode";
 import { Player } from "./Player";
+import { API } from "./api";
 
 export const App: React.FC = () => {
   const [drawer, setDrawer] = React.useState<boolean>(false);
@@ -17,18 +18,9 @@ export const App: React.FC = () => {
   );
 
   React.useEffect(() => {
-    (async () => {
-      if (currentEpisode !== null) {
-        const progress = currentEpisode!.progress;
-        await fetch(`/episodes/${currentEpisode?.id}/progress`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(Math.round(progress)),
-        });
-      }
-    })();
+    if (currentEpisode !== null) {
+      API.progress(currentEpisode!);
+    }
   }, [currentEpisode]);
 
   const openDrawer = (): void => {

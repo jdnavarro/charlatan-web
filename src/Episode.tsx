@@ -6,6 +6,7 @@ import RemoveIcon from "@material-ui/icons/Remove";
 
 import { Episode } from "./episode";
 import { TopBar } from "./TopBar";
+import { API } from "./api";
 
 interface Props {
   path: string;
@@ -20,11 +21,7 @@ export const Episodes: React.FC<Props> = (props) => {
   const [episodes, setEpisodes] = React.useState<Array<Episode>>([]);
 
   React.useEffect(() => {
-    fetch("/episodes")
-      .then((response) => response.json())
-      .then((episodes) => {
-        setEpisodes(episodes);
-      });
+    API.episodes(setEpisodes);
   }, []);
 
   const EpisodeItem: React.FC<{ episode: Episode }> = (props) => {
