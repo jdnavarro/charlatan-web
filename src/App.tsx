@@ -16,6 +16,21 @@ export const App: React.FC = () => {
     null
   );
 
+  React.useEffect(() => {
+    (async () => {
+      if (currentEpisode !== null) {
+        const progress = currentEpisode!.progress;
+        await fetch(`/episodes/${currentEpisode?.id}/progress`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(Math.round(progress)),
+        });
+      }
+    })();
+  }, [currentEpisode]);
+
   const openDrawer = (): void => {
     setDrawer(true);
   };

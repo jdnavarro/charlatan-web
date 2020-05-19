@@ -32,14 +32,14 @@ export const Audio: React.FC<Props> = (props) => {
         audio.currentTime = currentEpisode.progress;
       };
 
-      const interval = setInterval(
-        () =>
+      const interval = setInterval(() => {
+        if (playing) {
           setCurrentEpisode({
             ...currentEpisode,
             progress: audio.currentTime,
-          }),
-        5000
-      );
+          });
+        }
+      }, 5000);
 
       playing ? audio.play() : audio.pause();
 
