@@ -15,6 +15,7 @@ import PauseIcon from "@material-ui/icons/Pause";
 
 import { Audio } from "./Audio";
 import { Episode } from "./episode";
+import { Queue } from "./Queue";
 
 export const Player: React.FC<{
   currentEpisode: Episode | null;
@@ -28,56 +29,72 @@ export const Player: React.FC<{
 
   const [seekTime, setSeekTime] = React.useState<number | null>(null);
 
+  const [queue, setQueue] = React.useState(false);
+
+  const openQueue = (): void => {
+    setQueue(true);
+  };
+
+  const closeQueue = (): void => {
+    setQueue(false);
+  };
+
   const handleSeek = (_event: any, newValue: number | number[]) => {
     setSeekTime(newValue as number);
   };
 
   return (
     <ElevationScroll>
-      <AppBar
-        position="fixed"
-        color="primary"
-        css={{
-          top: "auto",
-          bottom: 0,
-        }}
-      >
-        {currentEpisode ? (
-          <React.Fragment>
-            <Slider
-              value={currentEpisode!.progress}
-              max={duration}
-              aria-labelledby="continuous-slider"
-              color="secondary"
-              onChange={handleSeek}
-            />
-            <Toolbar>
-              <Typography variant="h6">{currentEpisode!.title}</Typography>
-              <Fab
+      <React.Fragment>
+        <AppBar
+          position="fixed"
+          color="primary"
+          onClick={openQueue}
+          css={{
+            top: "auto",
+            bottom: 0,
+          }}
+        >
+          {currentEpisode ? (
+            <React.Fragment>
+              <Slider
+                value={currentEpisode!.progress}
+                max={duration}
+                aria-labelledby="continuous-slider"
                 color="secondary"
-                aria-label="play"
-                css={{
-                  position: "absolute",
-                  zIndex: 1,
-                  right: "5%",
-                  margin: "0 auto",
-                }}
-                onClick={() => (playing ? setPlaying(false) : setPlaying(true))}
-              >
-                {playing ? <PauseIcon /> : <PlayArrowIcon />}
-              </Fab>
-              <Audio
-                playing={playing}
-                currentEpisode={currentEpisode!}
-                setCurrentEpisode={setCurrentEpisode}
-                setDuration={setDuration}
-                seekTime={seekTime}
-                setSeekTime={setSeekTime}
+                onChange={handleSeek}
               />
-            </Toolbar>
-          </React.Fragment>
-        ) : null}
-      </AppBar>
+              <Toolbar>
+                <Typography variant="h6">{currentEpisode!.title}</Typography>
+                <Fab
+                  color="secondary"
+                  aria-label="play"
+                  css={{
+                    position: "absolute",
+                    zIndex: 1,
+                    right: "5%",
+                    margin: "0 auto",
+                  }}
+                  onClick={() =>
+                    playing ? setPlaying(false) : setPlaying(true)
+                  }
+                >
+                  {playing ? <PauseIcon /> : <PlayArrowIcon />}
+                </Fab>
+                <Audio
+                  playing={playing}
+                  currentEpisode={currentEpisode!}
+                  setCurrentEpisode={setCurrentEpisode}
+                  setDuration={setDuration}
+                  seekTime={seekTime}
+                  setSeekTime={setSeekTime}
+                />
+              </Toolbar>
+            </React.Fragment>
+          ) : null}
+        </AppBar>
+        <Queue closeQueue={closeQueue} queue={queue} />
+      </React.Fragment>
     </ElevationScroll>
   );
 };
