@@ -10,7 +10,7 @@ import { TopBar } from "./TopBar";
 interface Props {
   path: string;
   openDrawer: () => void;
-  currentEpisode: Episode;
+  currentEpisode: Episode | null;
   setCurrentEpisode: (episode: Episode) => void;
 }
 
@@ -29,18 +29,21 @@ export const Episodes: React.FC<Props> = (props) => {
 
   const EpisodeItem: React.FC<{ episode: Episode }> = (props) => {
     const { episode } = props;
+
     return (
       <ListItem>
         <ListItemText primary={episode.title} />
-        {episode.id === currentEpisode.id ? (
+        {currentEpisode && episode.id === currentEpisode.id ? (
           <RemoveIcon />
         ) : (
           <AddIcon
             onClick={() => {
               setCurrentEpisode(episode);
-              let newEpisodes = episodes;
-              newEpisodes[currentEpisode.id - 1] = currentEpisode;
-              setEpisodes(newEpisodes);
+              if (currentEpisode !== null) {
+                let newEpisodes = episodes;
+                newEpisodes[currentEpisode!.id - 1] = currentEpisode!;
+                setEpisodes(newEpisodes);
+              }
             }}
           />
         )}

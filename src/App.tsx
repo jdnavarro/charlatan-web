@@ -12,12 +12,9 @@ import { Player } from "./Player";
 export const App: React.FC = () => {
   const [drawer, setDrawer] = React.useState<boolean>(false);
 
-  const [currentEpisode, setCurrentEpisode] = React.useState<Episode>({
-    id: 3,
-    title: "#1474 - Dr. Rhonda Patrick",
-    src: "http://traffic.libsyn.com/joeroganexp/p1474.mp3?dest-id=19997",
-    progress: 5000,
-  });
+  const [currentEpisode, setCurrentEpisode] = React.useState<Episode | null>(
+    null
+  );
 
   const openDrawer = (): void => {
     setDrawer(true);
