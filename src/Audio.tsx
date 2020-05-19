@@ -26,14 +26,20 @@ export const Audio: React.FC<Props> = (props) => {
   React.useEffect(() => {
     if (audioEl.current !== null) {
       const audio = audioEl.current;
+
       const loadedData = () => {
         setDuration(audio.duration);
         audio.currentTime = currentEpisode.progress;
       };
 
-      const timeUpdate = () => {
-        setCurrentEpisode({ ...currentEpisode, progress: audio.currentTime });
-      };
+      const interval = setInterval(
+        () =>
+          setCurrentEpisode({
+            ...currentEpisode,
+            progress: audio.currentTime,
+          }),
+        5000
+      );
 
       playing ? audio.play() : audio.pause();
 
@@ -45,14 +51,12 @@ export const Audio: React.FC<Props> = (props) => {
 
       audio.addEventListener("loadeddata", loadedData);
 
-      audio.addEventListener("timeupdate", timeUpdate);
-
       return () => {
         audio.removeEventListener("loadeddata", loadedData);
-        audio.removeEventListener("timeupdate", timeUpdate);
+        clearInterval(interval);
       };
     }
-  }, [playing, currentEpisode, seekTime]);
+  });
 
   return <audio src={currentEpisode.src} ref={audioEl} />;
 };

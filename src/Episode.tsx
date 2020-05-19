@@ -35,7 +35,14 @@ export const Episodes: React.FC<Props> = (props) => {
         {episode.id === currentEpisode.id ? (
           <RemoveIcon />
         ) : (
-          <AddIcon onClick={() => setCurrentEpisode(episode)} />
+          <AddIcon
+            onClick={() => {
+              setCurrentEpisode(episode);
+              let newEpisodes = episodes;
+              newEpisodes[currentEpisode.id - 1] = currentEpisode;
+              setEpisodes(newEpisodes);
+            }}
+          />
         )}
       </ListItem>
     );
