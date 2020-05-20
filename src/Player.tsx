@@ -43,6 +43,11 @@ export const Player: React.FC<{
     setSeekTime(newValue as number);
   };
 
+  const handlePlaying = (e: any) => {
+    e.stopPropagation();
+    playing ? setPlaying(false) : setPlaying(true);
+  };
+
   return (
     <ElevationScroll>
       <React.Fragment>
@@ -75,9 +80,7 @@ export const Player: React.FC<{
                     right: "5%",
                     margin: "0 auto",
                   }}
-                  onClick={() =>
-                    playing ? setPlaying(false) : setPlaying(true)
-                  }
+                  onClick={handlePlaying}
                 >
                   {playing ? <PauseIcon /> : <PlayArrowIcon />}
                 </Fab>
