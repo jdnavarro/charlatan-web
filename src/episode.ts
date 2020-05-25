@@ -3,5 +3,5 @@ export interface Episode {
   title: string;
   src: string;
   progress: number;
-  position: number;
+  position: number | null;
 }

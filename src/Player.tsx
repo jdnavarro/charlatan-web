@@ -17,11 +17,15 @@ import { Audio } from "./Audio";
 import { Episode } from "./episode";
 import { Queue } from "./Queue";
 
-export const Player: React.FC<{
+interface Props {
+  episodes: Episode[];
+  setEpisodes: (episodes: Episode[]) => void;
   currentEpisode: Episode | null;
   setCurrentEpisode: (e: Episode) => void;
-}> = (props) => {
-  const { currentEpisode, setCurrentEpisode } = props;
+}
+
+export const Player: React.FC<Props> = (props) => {
+  const { currentEpisode, setCurrentEpisode, episodes, setEpisodes } = props;
 
   const [playing, setPlaying] = React.useState(false);
 
@@ -96,7 +100,12 @@ export const Player: React.FC<{
             </React.Fragment>
           ) : null}
         </AppBar>
-        <Queue closeQueue={closeQueue} queue={queue} />
+        <Queue
+          closeQueue={closeQueue}
+          queue={queue}
+          episodes={episodes}
+          setEpisodes={setEpisodes}
+        />
       </React.Fragment>
     </ElevationScroll>
   );

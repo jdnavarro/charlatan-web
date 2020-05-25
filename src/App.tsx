@@ -13,7 +13,7 @@ import { API } from "./api";
 export const App: React.FC = () => {
   const [drawer, setDrawer] = React.useState<boolean>(false);
 
-  const [episodes, setEpisodes] = React.useState<Array<Episode>>([]);
+  const [episodes, setEpisodes] = React.useState<Episode[]>([]);
 
   React.useEffect(() => {
     API.episodes(setEpisodes);
@@ -54,6 +54,8 @@ export const App: React.FC = () => {
           <Podcasts path="podcasts" openDrawer={openDrawer} />
         </Router>
         <Player
+          episodes={episodes}
+          setEpisodes={setEpisodes}
           currentEpisode={currentEpisode}
           setCurrentEpisode={setCurrentEpisode}
         />
