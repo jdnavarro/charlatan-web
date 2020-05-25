@@ -6,7 +6,7 @@ import { Container, CssBaseline } from "@material-ui/core";
 import { Nav } from "./Nav";
 import Podcasts from "./Podcast";
 import { Feed } from "./Feed";
-import { CurrentEpisode, Episode, Episodes } from "./episode";
+import { CurrentEpisode, Episodes } from "./episode";
 import { Player } from "./Player";
 import { API } from "./api";
 

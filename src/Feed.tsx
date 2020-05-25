@@ -76,7 +76,11 @@ export const Feed: React.FC<Props> = (props) => {
         {currentEpisode &&
         currentEpisode.id === episode.id &&
         currentEpisode.playing ? (
-          <PauseIcon />
+          <PauseIcon
+            onClick={() =>
+              setCurrentEpisode({ ...currentEpisode, playing: false })
+            }
+          />
         ) : (
           <PlayIcon />
         )}
