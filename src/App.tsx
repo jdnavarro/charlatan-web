@@ -6,7 +6,7 @@ import { Container, CssBaseline } from "@material-ui/core";
 import { Nav } from "./Nav";
 import Podcasts from "./Podcast";
 import { Feed } from "./Feed";
-import { Episode, Episodes } from "./episode";
+import { CurrentEpisode, Episode, Episodes } from "./episode";
 import { Player } from "./Player";
 import { API } from "./api";
 
@@ -19,9 +19,10 @@ export const App: React.FC = () => {
     API.episodes(setEpisodes);
   }, []);
 
-  const [currentEpisode, setCurrentEpisode] = React.useState<Episode | null>(
-    null
-  );
+  const [
+    currentEpisode,
+    setCurrentEpisode,
+  ] = React.useState<CurrentEpisode | null>(null);
 
   React.useEffect(() => {
     if (currentEpisode !== null) {

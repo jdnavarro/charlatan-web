@@ -10,7 +10,7 @@ import {
   Pause as PauseIcon,
 } from "@material-ui/icons";
 
-import { Episode, Episodes } from "./episode";
+import { Episode, Episodes, CurrentEpisode } from "./episode";
 import { TopBar } from "./TopBar";
 
 interface Props {
@@ -18,8 +18,8 @@ interface Props {
   openDrawer: () => void;
   episodes: Episodes;
   setEpisodes: (episodes: Episodes) => void;
-  currentEpisode: Episode | null;
-  setCurrentEpisode: (e: Episode) => void;
+  currentEpisode: CurrentEpisode | null;
+  setCurrentEpisode: (e: CurrentEpisode) => void;
 }
 
 const maxPosition = (episodes: Episodes): any => {
@@ -65,13 +65,20 @@ export const Feed: React.FC<Props> = (props) => {
             onClick={() => {
               episode.position = maxPosition(episodes);
               if (episode.position === 0) {
-                setCurrentEpisode(episode);
+                setCurrentEpisode({ ...episode, playing: false });
               }
               episodes[episode.id] = episode;
               setEpisodes(episodes);
               navigate("/");
             }}
           />
+        )}
+        {currentEpisode &&
+        currentEpisode.id === episode.id &&
+        currentEpisode.playing ? (
+          <PauseIcon />
+        ) : (
+          <PlayIcon />
         )}
       </ListItem>
     );

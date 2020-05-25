@@ -14,20 +14,18 @@ import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
 
 import { Audio } from "./Audio";
-import { Episode, Episodes } from "./episode";
+import { Episodes, CurrentEpisode } from "./episode";
 import { Queue } from "./Queue";
 
 interface Props {
   episodes: Episodes;
   setEpisodes: (episodes: Episodes) => void;
-  currentEpisode: Episode | null;
-  setCurrentEpisode: (e: Episode) => void;
+  currentEpisode: CurrentEpisode | null;
+  setCurrentEpisode: (e: CurrentEpisode) => void;
 }
 
 export const Player: React.FC<Props> = (props) => {
   const { currentEpisode, setCurrentEpisode, episodes, setEpisodes } = props;
-
-  const [playing, setPlaying] = React.useState(false);
 
   const [duration, setDuration] = React.useState(0);
 
@@ -49,7 +47,9 @@ export const Player: React.FC<Props> = (props) => {
 
   const handlePlaying = (e: any) => {
     e.stopPropagation();
-    playing ? setPlaying(false) : setPlaying(true);
+    currentEpisode!.playing
+      ? setCurrentEpisode({ ...currentEpisode!, playing: false })
+      : setCurrentEpisode({ ...currentEpisode!, playing: true });
   };
 
   return (
@@ -86,11 +86,10 @@ export const Player: React.FC<Props> = (props) => {
                   }}
                   onClick={handlePlaying}
                 >
-                  {playing ? <PauseIcon /> : <PlayArrowIcon />}
+                  {currentEpisode.playing ? <PauseIcon /> : <PlayArrowIcon />}
                 </Fab>
                 <Audio
-                  playing={playing}
-                  currentEpisode={currentEpisode!}
+                  currentEpisode={currentEpisode}
                   setCurrentEpisode={setCurrentEpisode}
                   setDuration={setDuration}
                   seekTime={seekTime}

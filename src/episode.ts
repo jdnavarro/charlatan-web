@@ -6,6 +6,10 @@ export interface Episode {
   position: number | null;
 }
 
+export interface CurrentEpisode extends Episode {
+  playing: boolean;
+}
+
 export interface Episodes {
   [i: number]: Episode;
 }

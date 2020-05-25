@@ -1,11 +1,10 @@
 import React from "react";
 
-import { Episode } from "./episode";
+import { CurrentEpisode } from "./episode";
 
 interface Props {
-  currentEpisode: Episode;
-  setCurrentEpisode: (e: Episode) => void;
-  playing: boolean;
+  currentEpisode: CurrentEpisode;
+  setCurrentEpisode: (e: CurrentEpisode) => void;
   setDuration: (n: number) => void;
   seekTime: number | null;
   setSeekTime: (n: any) => void;
@@ -15,7 +14,6 @@ export const Audio: React.FC<Props> = (props) => {
   const {
     currentEpisode,
     setCurrentEpisode,
-    playing,
     setDuration,
     seekTime,
     setSeekTime,
@@ -33,7 +31,7 @@ export const Audio: React.FC<Props> = (props) => {
       };
 
       const interval = setInterval(() => {
-        if (playing) {
+        if (currentEpisode.playing) {
           setCurrentEpisode({
             ...currentEpisode,
             progress: audio.currentTime,
@@ -41,7 +39,7 @@ export const Audio: React.FC<Props> = (props) => {
         }
       }, 5000);
 
-      playing ? audio.play() : audio.pause();
+      currentEpisode.playing ? audio.play() : audio.pause();
 
       if (seekTime && seekTime !== currentEpisode.progress) {
         audio.currentTime = seekTime;
