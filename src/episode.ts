@@ -5,3 +5,7 @@ export interface Episode {
   progress: number;
   position: number | null;
 }
+
+export interface Episodes {
+  [i: number]: Episode;
+}

@@ -1,4 +1,4 @@
-import { Episode } from "./episode";
+import { Episode, Episodes } from "./episode";
 
 const progress = async (episode: Episode): Promise<void> => {
   const { id, progress } = episode;
@@ -12,7 +12,7 @@ const progress = async (episode: Episode): Promise<void> => {
   });
 };
 
-const episodes = async (setEpisodes: (_: Episode[]) => void): Promise<void> => {
+const episodes = async (setEpisodes: (_: Episodes) => void): Promise<void> => {
   const episodes = await (await fetch("/episodes")).json();
   setEpisodes(episodes);
 };

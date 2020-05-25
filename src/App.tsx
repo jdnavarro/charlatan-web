@@ -6,14 +6,14 @@ import { Container, CssBaseline } from "@material-ui/core";
 import { Nav } from "./Nav";
 import Podcasts from "./Podcast";
 import { Feed } from "./Feed";
-import { Episode } from "./episode";
+import { Episode, Episodes } from "./episode";
 import { Player } from "./Player";
 import { API } from "./api";
 
 export const App: React.FC = () => {
   const [drawer, setDrawer] = React.useState<boolean>(false);
 
-  const [episodes, setEpisodes] = React.useState<Episode[]>([]);
+  const [episodes, setEpisodes] = React.useState<Episodes>({});
 
   React.useEffect(() => {
     API.episodes(setEpisodes);
@@ -46,10 +46,10 @@ export const App: React.FC = () => {
           <Feed
             path="/"
             openDrawer={openDrawer}
-            episodes={episodes}
-            setEpisodes={setEpisodes}
             currentEpisode={currentEpisode}
             setCurrentEpisode={setCurrentEpisode}
+            episodes={episodes}
+            setEpisodes={setEpisodes}
           />
           <Podcasts path="podcasts" openDrawer={openDrawer} />
         </Router>

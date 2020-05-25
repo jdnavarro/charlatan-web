@@ -2,13 +2,13 @@ import React from "react";
 
 import { Drawer, List, ListItem, ListItemText } from "@material-ui/core";
 
-import { Episode } from "./episode";
+import { Episode, Episodes } from "./episode";
 
 interface Props {
   queue: boolean;
   closeQueue: () => void;
-  episodes: Episode[];
-  setEpisodes: (episodes: Episode[]) => void;
+  episodes: Episodes;
+  setEpisodes: (episodes: Episodes) => void;
 }
 
 export const Queue: React.FC<Props> = (props) => {
@@ -16,7 +16,7 @@ export const Queue: React.FC<Props> = (props) => {
   return (
     <Drawer onClick={closeQueue} open={queue} anchor="bottom">
       <List>
-        {episodes
+        {Object.values(episodes)
           .filter((e) => e.position !== null)
           .map((item: Episode, index: number) => (
             <QueueItem episode={item} key={index} />

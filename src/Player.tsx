@@ -14,12 +14,12 @@ import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
 
 import { Audio } from "./Audio";
-import { Episode } from "./episode";
+import { Episode, Episodes } from "./episode";
 import { Queue } from "./Queue";
 
 interface Props {
-  episodes: Episode[];
-  setEpisodes: (episodes: Episode[]) => void;
+  episodes: Episodes;
+  setEpisodes: (episodes: Episodes) => void;
   currentEpisode: Episode | null;
   setCurrentEpisode: (e: Episode) => void;
 }

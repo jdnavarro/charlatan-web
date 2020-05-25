@@ -1,20 +1,37 @@
 import React from "react";
+import { useNavigate } from "@reach/router";
 
 import { Toolbar, ListItem, ListItemText, List } from "@material-ui/core";
-import AddIcon from "@material-ui/icons/Add";
-import RemoveIcon from "@material-ui/icons/Remove";
 
-import { Episode } from "./episode";
+import {
+  PlayArrow as PlayIcon,
+  Remove as RemoveIcon,
+  Add as AddIcon,
+  Pause as PauseIcon,
+} from "@material-ui/icons";
+
+import { Episode, Episodes } from "./episode";
 import { TopBar } from "./TopBar";
 
 interface Props {
   path: string;
   openDrawer: () => void;
-  episodes: Episode[];
-  setEpisodes: (episodes: Episode[]) => void;
+  episodes: Episodes;
+  setEpisodes: (episodes: Episodes) => void;
   currentEpisode: Episode | null;
-  setCurrentEpisode: (episode: Episode) => void;
+  setCurrentEpisode: (e: Episode) => void;
 }
+
+const maxPosition = (episodes: Episodes): any => {
+  const arr = Object.values(episodes).map((e) => {
+    if (e.position === null) {
+      return 0;
+    } else {
+      return e.position;
+    }
+  });
+  return Math.max(...arr);
+};
 
 export const Feed: React.FC<Props> = (props) => {
   const {
@@ -25,23 +42,34 @@ export const Feed: React.FC<Props> = (props) => {
     setCurrentEpisode,
   } = props;
 
+  const navigate = useNavigate();
+
   const EpisodeItem: React.FC<{ episode: Episode }> = (props) => {
     const { episode } = props;
 
     return (
       <ListItem>
         <ListItemText primary={episode.title} />
-        {currentEpisode && episode.id === currentEpisode.id ? (
-          <RemoveIcon />
+        {episode.position !== null ? (
+          <RemoveIcon
+            onClick={() => {
+              // FIXME: Shift positions
+              episode.position = null;
+              episodes[episode.id] = episode;
+              setEpisodes(episodes);
+              navigate("/");
+            }}
+          />
         ) : (
           <AddIcon
             onClick={() => {
-              setCurrentEpisode(episode);
-              if (currentEpisode !== null) {
-                let newEpisodes = episodes;
-                newEpisodes[currentEpisode!.id - 1] = currentEpisode!;
-                setEpisodes(newEpisodes);
+              episode.position = maxPosition(episodes);
+              if (episode.position === 0) {
+                setCurrentEpisode(episode);
               }
+              episodes[episode.id] = episode;
+              setEpisodes(episodes);
+              navigate("/");
             }}
           />
         )}
@@ -55,7 +83,7 @@ export const Feed: React.FC<Props> = (props) => {
       <main>
         <Toolbar />
         <List>
-          {episodes.map((item: Episode, index: number) => (
+          {Object.values(episodes).map((item: Episode, index: number) => (
             <EpisodeItem episode={item} key={index} />
           ))}
         </List>
