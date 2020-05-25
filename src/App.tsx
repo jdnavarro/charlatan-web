@@ -5,13 +5,19 @@ import { Container, CssBaseline } from "@material-ui/core";
 
 import { Nav } from "./Nav";
 import Podcasts from "./Podcast";
-import { Episodes } from "./Episode";
+import { Feed } from "./Feed";
 import { Episode } from "./episode";
 import { Player } from "./Player";
 import { API } from "./api";
 
 export const App: React.FC = () => {
   const [drawer, setDrawer] = React.useState<boolean>(false);
+
+  const [episodes, setEpisodes] = React.useState<Array<Episode>>([]);
+
+  React.useEffect(() => {
+    API.episodes(setEpisodes);
+  }, []);
 
   const [currentEpisode, setCurrentEpisode] = React.useState<Episode | null>(
     null
@@ -37,9 +43,11 @@ export const App: React.FC = () => {
       <Container maxWidth="sm">
         <Nav closeDrawer={closeDrawer} drawer={drawer} />
         <Router>
-          <Episodes
+          <Feed
             path="/"
             openDrawer={openDrawer}
+            episodes={episodes}
+            setEpisodes={setEpisodes}
             currentEpisode={currentEpisode}
             setCurrentEpisode={setCurrentEpisode}
           />

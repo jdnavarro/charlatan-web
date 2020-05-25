@@ -6,23 +6,24 @@ import RemoveIcon from "@material-ui/icons/Remove";
 
 import { Episode } from "./episode";
 import { TopBar } from "./TopBar";
-import { API } from "./api";
 
 interface Props {
   path: string;
   openDrawer: () => void;
+  episodes: Episode[];
+  setEpisodes: (episodes: Episode[]) => void;
   currentEpisode: Episode | null;
   setCurrentEpisode: (episode: Episode) => void;
 }
 
-export const Episodes: React.FC<Props> = (props) => {
-  const { openDrawer, currentEpisode, setCurrentEpisode } = props;
-
-  const [episodes, setEpisodes] = React.useState<Array<Episode>>([]);
-
-  React.useEffect(() => {
-    API.episodes(setEpisodes);
-  }, []);
+export const Feed: React.FC<Props> = (props) => {
+  const {
+    openDrawer,
+    episodes,
+    setEpisodes,
+    currentEpisode,
+    setCurrentEpisode,
+  } = props;
 
   const EpisodeItem: React.FC<{ episode: Episode }> = (props) => {
     const { episode } = props;
