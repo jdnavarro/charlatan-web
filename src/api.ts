@@ -1,5 +1,10 @@
 import { Episode, Episodes } from "./episode";
 
+const api_url =
+  process.env.NODE_ENV === "production"
+    ? process.env.REACT_APP_API_URL || ""
+    : "";
+
 const progress = async (episode: Episode): Promise<void> => {
   const { id, progress } = episode;
 
@@ -13,7 +18,7 @@ const progress = async (episode: Episode): Promise<void> => {
 };
 
 const episodes = async (setEpisodes: (_: Episodes) => void): Promise<void> => {
-  const episodes = await (await fetch("/episodes")).json();
+  const episodes = await (await fetch(`${api_url}/episodes`)).json();
   setEpisodes(episodes);
 };
 
