@@ -14,31 +14,32 @@ import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
 
 import { Audio } from "./Audio";
-import { Episodes, CurrentEpisode } from "./episode";
+import type * as Current from "./current";
+import type { Episodes } from "./queue";
 import { Queue } from "./Queue";
 
 interface Props {
-  episodes: Episodes;
-  setEpisodes: (episodes: Episodes) => void;
-  currentEpisode: CurrentEpisode | null;
-  setCurrentEpisode: (e: CurrentEpisode) => void;
+  queue: Episodes;
+  current: Current.Episode | null;
+  toggle: () => void;
+  setProgress: (n: number) => void;
 }
 
 export const Player: React.FC<Props> = (props) => {
-  const { currentEpisode, setCurrentEpisode, episodes, setEpisodes } = props;
+  const { queue, current, toggle, setProgress } = props;
 
   const [duration, setDuration] = React.useState(0);
 
   const [seekTime, setSeekTime] = React.useState<number | null>(null);
 
-  const [queue, setQueue] = React.useState(false);
+  const [queueDrawer, setQueueDrawer] = React.useState(false);
 
   const openQueue = (): void => {
-    setQueue(true);
+    setQueueDrawer(true);
   };
 
   const closeQueue = (): void => {
-    setQueue(false);
+    setQueueDrawer(false);
   };
 
   const handleSeek = (_event: any, newValue: number | number[]) => {
@@ -47,9 +48,7 @@ export const Player: React.FC<Props> = (props) => {
 
   const handlePlaying = (e: any) => {
     e.stopPropagation();
-    currentEpisode!.playing
-      ? setCurrentEpisode({ ...currentEpisode!, playing: false })
-      : setCurrentEpisode({ ...currentEpisode!, playing: true });
+    toggle();
   };
 
   return (
@@ -64,17 +63,17 @@ export const Player: React.FC<Props> = (props) => {
             bottom: 0,
           }}
         >
-          {currentEpisode ? (
+          {current ? (
             <React.Fragment>
               <Slider
-                value={currentEpisode!.progress}
+                value={current.progress}
                 max={duration}
                 aria-labelledby="continuous-slider"
                 color="secondary"
                 onChange={handleSeek}
               />
               <Toolbar>
-                <Typography variant="h6">{currentEpisode!.title}</Typography>
+                <Typography variant="h6">{current.title}</Typography>
                 <Fab
                   color="secondary"
                   aria-label="play"
@@ -86,11 +85,11 @@ export const Player: React.FC<Props> = (props) => {
                   }}
                   onClick={handlePlaying}
                 >
-                  {currentEpisode.playing ? <PauseIcon /> : <PlayArrowIcon />}
+                  {current.playing ? <PauseIcon /> : <PlayArrowIcon />}
                 </Fab>
                 <Audio
-                  currentEpisode={currentEpisode}
-                  setCurrentEpisode={setCurrentEpisode}
+                  current={current}
+                  setProgress={setProgress}
                   setDuration={setDuration}
                   seekTime={seekTime}
                   setSeekTime={setSeekTime}
@@ -99,12 +98,7 @@ export const Player: React.FC<Props> = (props) => {
             </React.Fragment>
           ) : null}
         </AppBar>
-        <Queue
-          closeQueue={closeQueue}
-          queue={queue}
-          episodes={episodes}
-          setEpisodes={setEpisodes}
-        />
+        <Queue closeQueue={closeQueue} drawer={queueDrawer} episodes={queue} />
       </React.Fragment>
     </ElevationScroll>
   );

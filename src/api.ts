@@ -1,12 +1,19 @@
-import { Episode, Episodes } from "./episode";
+export interface Episode {
+  title: string;
+  src: string;
+  progress: number;
+  position: number | null;
+}
+
+export type Episodes = Map<string, Episode>;
 
 const api_url =
   process.env.NODE_ENV === "production"
     ? process.env.REACT_APP_API_URL || ""
     : "";
 
-const progress = async (episode: Episode): Promise<void> => {
-  const { id, progress } = episode;
+export const progress = async (id: number, episode: Episode): Promise<void> => {
+  const { progress } = episode;
 
   await fetch(`/episodes/${id}/progress`, {
     method: "PUT",
@@ -17,12 +24,11 @@ const progress = async (episode: Episode): Promise<void> => {
   });
 };
 
-const episodes = async (setEpisodes: (_: Episodes) => void): Promise<void> => {
-  const episodes = await (await fetch(`${api_url}/episodes`)).json();
-  setEpisodes(episodes);
+export const episodes = async (): Promise<Episodes> => {
+  return await (await fetch(`${api_url}/episodes`)).json();
 };
 
-const podcast = async (url: String): Promise<void> => {
+export const podcast = async (url: String): Promise<void> => {
   fetch("/podcasts", {
     method: "POST",
     headers: {
@@ -31,5 +37,3 @@ const podcast = async (url: String): Promise<void> => {
     body: JSON.stringify(url),
   });
 };
-
-export const API = { episodes, progress, podcast };

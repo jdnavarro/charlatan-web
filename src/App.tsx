@@ -1,34 +1,30 @@
 import React from "react";
 import { Router } from "@reach/router";
 
+import { enableMapSet } from "immer";
+
 import { Container, CssBaseline } from "@material-ui/core";
 
 import { Nav } from "./Nav";
 import Podcasts from "./Podcast";
 import { Feed } from "./Feed";
-import { CurrentEpisode, Episodes } from "./episode";
 import { Player } from "./Player";
-import { API } from "./api";
+import { useEpisodes } from "./useEpisodes";
+
+enableMapSet();
 
 export const App: React.FC = () => {
   const [drawer, setDrawer] = React.useState<boolean>(false);
 
-  const [episodes, setEpisodes] = React.useState<Episodes>({});
-
-  React.useEffect(() => {
-    API.episodes(setEpisodes);
-  }, []);
-
-  const [
-    currentEpisode,
-    setCurrentEpisode,
-  ] = React.useState<CurrentEpisode | null>(null);
-
-  React.useEffect(() => {
-    if (currentEpisode !== null) {
-      API.progress(currentEpisode!);
-    }
-  }, [currentEpisode]);
+  const {
+    feed,
+    queue,
+    enqueue,
+    current,
+    currentify,
+    toggle,
+    setProgress,
+  } = useEpisodes();
 
   const openDrawer = (): void => {
     setDrawer(true);
@@ -47,18 +43,16 @@ export const App: React.FC = () => {
           <Feed
             path="/"
             openDrawer={openDrawer}
-            currentEpisode={currentEpisode}
-            setCurrentEpisode={setCurrentEpisode}
-            episodes={episodes}
-            setEpisodes={setEpisodes}
+            episodes={feed}
+            enqueue={enqueue}
           />
           <Podcasts path="podcasts" openDrawer={openDrawer} />
         </Router>
         <Player
-          episodes={episodes}
-          setEpisodes={setEpisodes}
-          currentEpisode={currentEpisode}
-          setCurrentEpisode={setCurrentEpisode}
+          queue={queue}
+          current={current}
+          toggle={toggle}
+          setProgress={setProgress}
         />
       </Container>
     </React.Fragment>

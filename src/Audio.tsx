@@ -1,23 +1,17 @@
 import React from "react";
 
-import { CurrentEpisode } from "./episode";
+import type { Episode } from "./current";
 
 interface Props {
-  currentEpisode: CurrentEpisode;
-  setCurrentEpisode: (e: CurrentEpisode) => void;
+  current: Episode;
+  setProgress: (progress: number) => void;
   setDuration: (n: number) => void;
   seekTime: number | null;
   setSeekTime: (n: any) => void;
 }
 
 export const Audio: React.FC<Props> = (props) => {
-  const {
-    currentEpisode,
-    setCurrentEpisode,
-    setDuration,
-    seekTime,
-    setSeekTime,
-  } = props;
+  const { current, setProgress, setDuration, seekTime, setSeekTime } = props;
 
   const audioEl = React.useRef<HTMLAudioElement>(null);
 
@@ -27,23 +21,20 @@ export const Audio: React.FC<Props> = (props) => {
 
       const loadedData = () => {
         setDuration(audio.duration);
-        audio.currentTime = currentEpisode.progress;
+        audio.currentTime = current.progress;
       };
 
       const interval = setInterval(() => {
-        if (currentEpisode.playing) {
-          setCurrentEpisode({
-            ...currentEpisode,
-            progress: audio.currentTime,
-          });
+        if (current.playing) {
+          setProgress(audio.currentTime);
         }
       }, 5000);
 
-      currentEpisode.playing ? audio.play() : audio.pause();
+      current.playing ? audio.play() : audio.pause();
 
-      if (seekTime && seekTime !== currentEpisode.progress) {
+      if (seekTime && seekTime !== current.progress) {
         audio.currentTime = seekTime;
-        setCurrentEpisode({ ...currentEpisode, progress: audio.currentTime });
+        setProgress(audio.currentTime);
         setSeekTime(null);
       }
 
@@ -56,5 +47,5 @@ export const Audio: React.FC<Props> = (props) => {
     }
   });
 
-  return <audio src={currentEpisode.src} ref={audioEl} />;
+  return <audio src={current.src} ref={audioEl} />;
 };

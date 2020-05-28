@@ -2,31 +2,28 @@ import React from "react";
 
 import { Drawer, List, ListItem, ListItemText } from "@material-ui/core";
 
-import { Episode, Episodes } from "./episode";
+import { Episodes, Episode } from "./queue";
 
 interface Props {
-  queue: boolean;
+  drawer: boolean;
   closeQueue: () => void;
   episodes: Episodes;
-  setEpisodes: (episodes: Episodes) => void;
 }
 
 export const Queue: React.FC<Props> = (props) => {
-  const { closeQueue, queue, episodes, setEpisodes } = props;
+  const { closeQueue, drawer, episodes } = props;
   return (
-    <Drawer onClick={closeQueue} open={queue} anchor="bottom">
+    <Drawer onClick={closeQueue} open={drawer} anchor="bottom">
       <List>
-        {Object.values(episodes)
-          .filter((e) => e.position !== null)
-          .map((item: Episode, index: number) => (
-            <QueueItem episode={item} key={index} />
-          ))}
+        {episodes.map((episode, key) => (
+          <EpisodeItem key={key} episode={episode} />
+        ))}
       </List>
     </Drawer>
   );
 };
 
-const QueueItem: React.FC<{ episode: Episode }> = (props) => {
+const EpisodeItem: React.FC<{ episode: Episode }> = (props) => {
   const { episode } = props;
 
   return (

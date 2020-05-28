@@ -4,7 +4,7 @@ import { Toolbar, TextField, Button } from "@material-ui/core";
 import SaveIcon from "@material-ui/icons/Save";
 
 import { TopBar } from "./TopBar";
-import { API } from "./api";
+import * as API from "./api";
 
 interface Props {
   openDrawer: () => void;
