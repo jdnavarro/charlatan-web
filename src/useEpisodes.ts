@@ -106,6 +106,7 @@ export const useEpisodes = (): {
 
   const setProgress = (progress: number): void => {
     if (current) {
+      setCurrent({ ...current, progress });
       setFeed(
         produce(_feed, (draft) => {
           draft.set(current.id, { ...draft.get(current.id)!, progress });
