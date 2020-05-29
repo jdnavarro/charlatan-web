@@ -12,7 +12,7 @@ const api_url =
     ? process.env.REACT_APP_API_URL || ""
     : "";
 
-// TODO: Handle error
+// TODO: Handle errors
 export const progress = async (id: string, progress: number): Promise<void> => {
   await fetch(`${api_url}/episodes/${id}/progress`, {
     method: "PUT",
@@ -23,7 +23,27 @@ export const progress = async (id: string, progress: number): Promise<void> => {
   });
 };
 
-// TODO: Handle error
+// TODO: Handle errors
+export const position = async (
+  id: string,
+  position: number | null | undefined
+): Promise<void> => {
+  if (position === undefined) {
+    position = 0;
+  }
+
+  const n = Number(id);
+
+  await fetch(`${api_url}/episodes/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ n, position }),
+  });
+};
+
+// TODO: Handle errors
 export const episodes = async (): Promise<Episodes> => {
   return await (await fetch(`${api_url}/episodes`)).json();
 };

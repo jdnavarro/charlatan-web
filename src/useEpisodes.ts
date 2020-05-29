@@ -31,8 +31,8 @@ export const useEpisodes = (): {
     })();
   }, []);
 
-  const enqueue = (id: string, pos?: number | null): void => {
-    if (pos === null) {
+  const enqueue = (id: string, position?: number | null): void => {
+    if (position === null) {
       setQueue(
         produce(_queue, (draft) => {
           draft.splice(draft.indexOf(id), 1);
@@ -43,14 +43,14 @@ export const useEpisodes = (): {
           draft.set(id, { ...draft.get(id)!, queued: false });
         })
       );
-    } else if (typeof pos === "number") {
+    } else if (typeof position === "number") {
       setQueue(
         produce(_queue, (draft) => {
           const i = draft.indexOf(id);
           if (i > -1) {
             draft.splice(i, 1);
           }
-          draft.splice(pos, 0, id);
+          draft.splice(position, 0, id);
         })
       );
       setFeed(
@@ -78,6 +78,7 @@ export const useEpisodes = (): {
         })
       );
     }
+    API.position(id, position);
   };
 
   const currentify = (id: string): void => {
