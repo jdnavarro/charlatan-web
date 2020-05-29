@@ -112,6 +112,7 @@ export const useEpisodes = (): {
           draft.set(current.id, { ...draft.get(current.id)!, progress });
         })
       );
+      API.progress(current.id, progress);
     }
   };
 

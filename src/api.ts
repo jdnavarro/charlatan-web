@@ -12,10 +12,9 @@ const api_url =
     ? process.env.REACT_APP_API_URL || ""
     : "";
 
-export const progress = async (id: number, episode: Episode): Promise<void> => {
-  const { progress } = episode;
-
-  await fetch(`/episodes/${id}/progress`, {
+// TODO: Handle error
+export const progress = async (id: string, progress: number): Promise<void> => {
+  await fetch(`${api_url}/episodes/${id}/progress`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -24,6 +23,7 @@ export const progress = async (id: number, episode: Episode): Promise<void> => {
   });
 };
 
+// TODO: Handle error
 export const episodes = async (): Promise<Episodes> => {
   return await (await fetch(`${api_url}/episodes`)).json();
 };
