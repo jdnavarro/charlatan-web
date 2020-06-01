@@ -14,12 +14,12 @@ const api_url =
 
 // TODO: Handle errors
 export const progress = async (id: string, progress: number): Promise<void> => {
-  await fetch(`${api_url}/episodes/${id}/progress`, {
-    method: "PUT",
+  await fetch(`${api_url}/episodes/${id}`, {
+    method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(Math.round(progress)),
+    body: JSON.stringify({ progress: Math.round(progress) }),
   });
 };
 
@@ -32,14 +32,12 @@ export const position = async (
     position = 0;
   }
 
-  const n = Number(id);
-
   await fetch(`${api_url}/episodes/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ n, position }),
+    body: JSON.stringify({ position }),
   });
 };
 
