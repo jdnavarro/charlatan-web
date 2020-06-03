@@ -1,7 +1,14 @@
 import React from "react";
 import { useNavigate } from "@reach/router";
 
-import { Toolbar, ListItem, ListItemText, List } from "@material-ui/core";
+import {
+  Toolbar,
+  ListItem,
+  ListItemText,
+  List,
+  ListItemSecondaryAction,
+  IconButton,
+} from "@material-ui/core";
 
 import { Remove as RemoveIcon, Add as AddIcon } from "@material-ui/icons";
 
@@ -45,20 +52,29 @@ const EpisodeItem: React.FC<{
   return (
     <ListItem>
       <ListItemText primary={episode.title} />
+
       {episode.queued ? (
-        <RemoveIcon
-          onClick={() => {
-            enqueue(episode.id, null);
-            navigate("/");
-          }}
-        />
+        <ListItemSecondaryAction>
+          <IconButton
+            onClick={() => {
+              enqueue(episode.id, null);
+              navigate("/");
+            }}
+          >
+            <RemoveIcon />
+          </IconButton>
+        </ListItemSecondaryAction>
       ) : (
-        <AddIcon
-          onClick={() => {
-            enqueue(episode.id);
-            navigate("/");
-          }}
-        />
+        <ListItemSecondaryAction>
+          <IconButton
+            onClick={() => {
+              enqueue(episode.id);
+              navigate("/");
+            }}
+          >
+            <AddIcon />
+          </IconButton>
+        </ListItemSecondaryAction>
       )}
     </ListItem>
   );
