@@ -23,10 +23,11 @@ interface Props {
   current: Current.Episode | null;
   toggle: () => void;
   setProgress: (n: number) => void;
+  enqueue: (id: string, pos?: number | null) => void;
 }
 
 export const Player: React.FC<Props> = (props) => {
-  const { queue, current, toggle, setProgress } = props;
+  const { queue, enqueue, current, toggle, setProgress } = props;
 
   const [duration, setDuration] = React.useState(0);
 
@@ -98,7 +99,12 @@ export const Player: React.FC<Props> = (props) => {
             </React.Fragment>
           ) : null}
         </AppBar>
-        <Queue closeQueue={closeQueue} drawer={queueDrawer} episodes={queue} />
+        <Queue
+          closeQueue={closeQueue}
+          drawer={queueDrawer}
+          episodes={queue}
+          enqueue={enqueue}
+        />
       </React.Fragment>
     </ElevationScroll>
   );

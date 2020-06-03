@@ -16,15 +16,7 @@ enableMapSet();
 export const App: React.FC = () => {
   const [drawer, setDrawer] = React.useState<boolean>(false);
 
-  const {
-    feed,
-    queue,
-    enqueue,
-    current,
-    currentify,
-    toggle,
-    setProgress,
-  } = useEpisodes();
+  const { feed, queue, enqueue, current, toggle, setProgress } = useEpisodes();
 
   const openDrawer = (): void => {
     setDrawer(true);
@@ -50,6 +42,7 @@ export const App: React.FC = () => {
         </Router>
         <Player
           queue={queue}
+          enqueue={enqueue}
           current={current}
           toggle={toggle}
           setProgress={setProgress}
