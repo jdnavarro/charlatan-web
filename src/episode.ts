@@ -1,15 +1,29 @@
-export interface Episode {
-  id: number;
+import type * as current from "./current";
+import type * as feed from "./feed";
+import type * as queue from "./queue";
+import type * as api from "./api";
+
+export interface Core {
+  id: string;
   title: string;
-  src: string;
   progress: number;
-  position: number | null;
+  duration: number;
+  publication: Date;
+  image: URL;
 }
 
-export interface CurrentEpisode extends Episode {
-  playing: boolean;
-}
+export type Full = Omit<
+  feed.Episode &
+    queue.Episode &
+    current.Episode &
+    current.Details &
+    Details &
+    api.Episode,
+  "id" | "playing"
+>;
 
-export interface Episodes {
-  [i: number]: Episode;
+export type Dict = Map<string, Full>;
+
+export interface Details extends current.Details {
+  queued: boolean;
 }

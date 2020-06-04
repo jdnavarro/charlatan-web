@@ -1,13 +1,7 @@
-export interface Episode {
-  id: string;
-  title: string;
-  progress: number;
+import type * as episode from "./episode";
+
+export interface Episode extends episode.Core {
   queued: boolean;
 }
 
 export type Episodes = Episode[];
-
-export type EpisodesById = Map<
-  string,
-  { title: string; src: string; progress: number; queued: boolean }
->;

@@ -1,7 +1,6 @@
-export interface Episode {
-  title: string;
-  src: string;
-  progress: number;
+import type * as episode from "./episode";
+
+export interface Episode extends episode.Core {
   position: number | null;
 }
 

@@ -1,8 +1,6 @@
-export interface Episode {
-  id: string;
-  title: string;
-  progress: number;
-}
+import type * as episode from "./episode";
+
+export type Episode = episode.Core;
 
 export type Episodes = Episode[];
 

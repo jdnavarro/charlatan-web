@@ -5,6 +5,7 @@ import * as API from "./api";
 import type * as Current from "./current";
 import type * as Feed from "./feed";
 import type * as Queue from "./queue";
+import type * as episode from "./episode";
 
 export const useEpisodes = (): {
   feed: Feed.Episodes;
@@ -15,7 +16,7 @@ export const useEpisodes = (): {
   toggle: () => void;
   setProgress: (progress: number) => void;
 } => {
-  const [_feed, setFeed] = React.useState<Feed.EpisodesById>(new Map());
+  const [_episodes, setEpisodes] = React.useState<episode.Dict>(new Map());
 
   const [_queue, setQueue] = React.useState<Queue.Ids>([]);
 
@@ -23,9 +24,9 @@ export const useEpisodes = (): {
 
   React.useEffect(() => {
     (async () => {
-      const episodes = await API.episodes();
-      const { feed, queue, current } = unpack(episodes);
-      setFeed(feed);
+      const apiEpisodes = await API.episodes();
+      const { episodes, queue, current } = unpack(apiEpisodes);
+      setEpisodes(episodes);
       setQueue(queue);
       setCurrent(current);
     })();
@@ -38,8 +39,8 @@ export const useEpisodes = (): {
           draft.splice(draft.indexOf(id), 1);
         })
       );
-      setFeed(
-        produce(_feed, (draft) => {
+      setEpisodes(
+        produce(_episodes, (draft) => {
           draft.set(id, { ...draft.get(id)!, queued: false });
         })
       );
@@ -53,8 +54,8 @@ export const useEpisodes = (): {
           draft.splice(position, 0, id);
         })
       );
-      setFeed(
-        produce(_feed, (draft) => {
+      setEpisodes(
+        produce(_episodes, (draft) => {
           draft.set(id, { ...draft.get(id)!, queued: true });
         })
       );
@@ -72,8 +73,8 @@ export const useEpisodes = (): {
           }
         })
       );
-      setFeed(
-        produce(_feed, (draft) => {
+      setEpisodes(
+        produce(_episodes, (draft) => {
           draft.set(id, { ...draft.get(id)!, queued: true });
         })
       );
@@ -83,20 +84,51 @@ export const useEpisodes = (): {
 
   const currentify = (id: string): void => {
     enqueue(id, 0);
-    const { title, src, progress } = _feed.get(id)!;
-    setCurrent({ id, title, src, progress, playing: false });
+    // TODO: Rambda omit or immer?
+    const {
+      title,
+      src,
+      progress,
+      duration,
+      publication,
+      image,
+    } = _episodes.get(id)!;
+    setCurrent({
+      id,
+      title,
+      src,
+      progress,
+      duration,
+      publication,
+      image,
+      playing: false,
+    });
   };
 
-  const feed = Array.from(_feed).map(([id, { title, progress, queued }]) => ({
-    id,
-    title,
-    progress,
-    queued,
-  }));
+  const feed = Array.from(_episodes).map(
+    // TODO: Rambda omit or immer?
+    ([id, { title, progress, duration, publication, image, queued }]) => ({
+      id,
+      title,
+      progress,
+      duration,
+      publication,
+      image,
+      queued,
+    })
+  );
 
   const queue = _queue.map((id) => {
-    const { title, progress } = _feed.get(id)!;
-    return { id, title, progress };
+    // TODO: Rambda omit or immer?
+    const {
+      title,
+      progress,
+      duration,
+      publication,
+      image,
+      queued,
+    } = _episodes.get(id)!;
+    return { id, title, progress, duration, publication, image, queued };
   });
 
   const toggle = (): void => {
@@ -108,8 +140,8 @@ export const useEpisodes = (): {
   const setProgress = (progress: number): void => {
     if (current) {
       setCurrent({ ...current, progress });
-      setFeed(
-        produce(_feed, (draft) => {
+      setEpisodes(
+        produce(_episodes, (draft) => {
           draft.set(current.id, { ...draft.get(current.id)!, progress });
         })
       );
@@ -121,23 +153,50 @@ export const useEpisodes = (): {
 };
 
 const unpack = (
-  episodes: API.Episodes
+  apiEpisodes: API.Episodes
 ): {
-  feed: Feed.EpisodesById;
+  episodes: episode.Dict;
   queue: Queue.Ids;
   current: Current.Episode | null;
 } => {
-  if (Object.keys(episodes).length === 0) {
-    return { feed: new Map(), queue: [], current: null };
+  if (Object.keys(apiEpisodes).length === 0) {
+    return { episodes: new Map(), queue: [], current: null };
   }
 
-  const entries = Object.entries(episodes);
+  const entries = Object.entries(apiEpisodes);
 
-  const feed = new Map(
-    entries.map(([id, { title, progress, src, position }]) => [
-      id,
-      { title, progress, src, queued: position !== null },
-    ])
+  const episodes = new Map(
+    // TODO: Rambda omit or immer?
+    entries.map(
+      ([
+        id,
+        {
+          title,
+          progress,
+          duration,
+          publication,
+          image,
+          playing,
+          notes,
+          src,
+          position,
+        },
+      ]) => [
+        id,
+        {
+          title,
+          progress,
+          duration,
+          publication,
+          image,
+          playing,
+          notes,
+          src,
+          position,
+          queued: position !== null,
+        },
+      ]
+    )
   );
 
   const queue = entries
@@ -149,10 +208,26 @@ const unpack = (
 
   const current = id
     ? (() => {
-        const { title, progress, src } = feed.get(id)!;
-        return { id, title, progress, src, playing: false };
+        const {
+          title,
+          progress,
+          duration,
+          publication,
+          image,
+          src,
+        } = episodes.get(id)!;
+        return {
+          id,
+          title,
+          progress,
+          src,
+          duration,
+          publication,
+          image,
+          playing: false,
+        };
       })()
     : null;
 
-  return { feed, queue, current };
+  return { episodes, queue, current };
 };
