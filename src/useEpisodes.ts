@@ -206,6 +206,7 @@ const unpack = (
 
   const id = queue.shift();
 
+  // TODO: Rambda omit or immer?
   const current = id
     ? (() => {
         const {

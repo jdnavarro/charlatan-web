@@ -2,8 +2,10 @@ import React from "react";
 import { useNavigate } from "@reach/router";
 
 import {
+  Avatar,
   Toolbar,
   ListItem,
+  ListItemAvatar,
   ListItemText,
   List,
   ListItemSecondaryAction,
@@ -51,6 +53,9 @@ const EpisodeItem: React.FC<{
 
   return (
     <ListItem>
+      <ListItemAvatar>
+        <Avatar alt={episode.id} src={episode.image.toString()} />
+      </ListItemAvatar>
       <ListItemText primary={episode.title} />
 
       {episode.queued ? (
