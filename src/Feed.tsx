@@ -3,13 +3,14 @@ import { useNavigate } from "@reach/router";
 
 import {
   Avatar,
-  Toolbar,
+  Divider,
   ListItem,
   ListItemAvatar,
   ListItemText,
   List,
   ListItemSecondaryAction,
   IconButton,
+  Toolbar,
 } from "@material-ui/core";
 
 import { Remove as RemoveIcon, Add as AddIcon } from "@material-ui/icons";
@@ -34,7 +35,10 @@ export const Feed: React.FC<Props> = (props) => {
         <Toolbar />
         <List>
           {episodes.map((episode, key) => (
+            <React.Fragment>
             <EpisodeItem key={key} episode={episode} enqueue={enqueue} />
+            <Divider variant="inset" component="li" />
+            </React.Fragment>
           ))}
         </List>
       </main>
