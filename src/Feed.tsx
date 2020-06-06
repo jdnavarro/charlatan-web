@@ -56,7 +56,10 @@ const EpisodeItem: React.FC<{
       <ListItemAvatar>
         <Avatar alt={episode.id} src={episode.image.toString()} />
       </ListItemAvatar>
-      <ListItemText primary={episode.title} />
+      <ListItemText
+        primary={episode.title}
+        secondary={new Date(Number(episode.publication) * 1000).toDateString()}
+      />
 
       {episode.queued ? (
         <ListItemSecondaryAction>

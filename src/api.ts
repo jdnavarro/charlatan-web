@@ -40,9 +40,15 @@ export const position = async (
   });
 };
 
-// TODO: Handle errors
 export const episodes = async (): Promise<Episodes> => {
-  return await (await fetch(`${api_url}/episodes`)).json();
+  try {
+    const response = await fetch(`${api_url}/episodes`);
+    const data = await response.json();
+    return data;
+  } catch (err) {
+    console.error(err);
+    return new Map();
+  }
 };
 
 export const podcast = async (url: String): Promise<void> => {
