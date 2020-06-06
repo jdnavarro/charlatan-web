@@ -58,7 +58,11 @@ const EpisodeItem: React.FC<{
       </ListItemAvatar>
       <ListItemText
         primary={episode.title}
-        secondary={new Date(Number(episode.publication) * 1000).toDateString()}
+        secondary={
+          new Date(Number(episode.publication) * 1000).toDateString() +
+          " -- " +
+          new Date(Number(episode.duration * 1000)).toISOString().substr(11, 8)
+        }
       />
 
       {episode.queued ? (
