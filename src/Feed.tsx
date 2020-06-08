@@ -15,7 +15,8 @@ import {
 
 import { Remove as RemoveIcon, Add as AddIcon } from "@material-ui/icons";
 
-import type { Episodes, Episode } from "./feed";
+import type { Episodes, Episode, Details } from "./feed";
+import { EpisodeDetails } from "./EpisodeDetails";
 import { TopBar } from "./TopBar";
 
 interface Props {
@@ -23,10 +24,11 @@ interface Props {
   openDrawer: () => void;
   episodes: Episodes;
   enqueue: (id: string, pos?: number | null) => void;
+  details: (id: string) => Details;
 }
 
 export const Feed: React.FC<Props> = (props) => {
-  const { openDrawer, episodes, enqueue } = props;
+  const { openDrawer, episodes, enqueue, details } = props;
 
   return (
     <React.Fragment>
@@ -36,8 +38,13 @@ export const Feed: React.FC<Props> = (props) => {
         <List>
           {episodes.map((episode, key) => (
             <React.Fragment>
-            <EpisodeItem key={key} episode={episode} enqueue={enqueue} />
-            <Divider variant="inset" component="li" />
+              <EpisodeItem
+                key={key}
+                episode={episode}
+                enqueue={enqueue}
+                details={details}
+              />
+              <Divider variant="inset" component="li" />
             </React.Fragment>
           ))}
         </List>
@@ -50,48 +57,68 @@ const EpisodeItem: React.FC<{
   key: number;
   episode: Episode;
   enqueue: (id: string, pos?: number | null) => void;
+  details: (id: string) => Details;
 }> = (props) => {
-  const { episode, enqueue } = props;
+  const { episode, enqueue, details } = props;
 
   const navigate = useNavigate();
 
-  return (
-    <ListItem>
-      <ListItemAvatar>
-        <Avatar alt={episode.id} src={episode.image.toString()} />
-      </ListItemAvatar>
-      <ListItemText
-        primary={episode.title}
-        secondary={
-          new Date(Number(episode.publication) * 1000).toDateString() +
-          " -- " +
-          new Date(Number(episode.duration * 1000)).toISOString().substr(11, 8)
-        }
-      />
+  const [episodeDetailsDrawer, setEpisodeDetailsDrawer] = React.useState(false);
 
-      {episode.queued ? (
-        <ListItemSecondaryAction>
-          <IconButton
-            onClick={() => {
-              enqueue(episode.id, null);
-              navigate("/");
-            }}
-          >
-            <RemoveIcon />
-          </IconButton>
-        </ListItemSecondaryAction>
-      ) : (
-        <ListItemSecondaryAction>
-          <IconButton
-            onClick={() => {
-              enqueue(episode.id);
-              navigate("/");
-            }}
-          >
-            <AddIcon />
-          </IconButton>
-        </ListItemSecondaryAction>
-      )}
-    </ListItem>
+  const openEpisodeDetails = (): void => {
+    setEpisodeDetailsDrawer(true);
+  };
+
+  const closeEpisodeDetails = (): void => {
+    setEpisodeDetailsDrawer(false);
+  };
+
+  return (
+    <React.Fragment>
+      <ListItem onClick={openEpisodeDetails}>
+        <ListItemAvatar>
+          <Avatar alt={episode.id} src={episode.image.toString()} />
+        </ListItemAvatar>
+        <ListItemText
+          primary={episode.title}
+          secondary={
+            new Date(Number(episode.publication) * 1000).toDateString() +
+            " -- " +
+            new Date(Number(episode.duration * 1000))
+              .toISOString()
+              .substr(11, 8)
+          }
+        />
+
+        {episode.queued ? (
+          <ListItemSecondaryAction>
+            <IconButton
+              onClick={() => {
+                enqueue(episode.id, null);
+                navigate("/");
+              }}
+            >
+              <RemoveIcon />
+            </IconButton>
+          </ListItemSecondaryAction>
+        ) : (
+          <ListItemSecondaryAction>
+            <IconButton
+              onClick={() => {
+                enqueue(episode.id);
+                navigate("/");
+              }}
+            >
+              <AddIcon />
+            </IconButton>
+          </ListItemSecondaryAction>
+        )}
+      </ListItem>
+      <EpisodeDetails
+        closeEpisodeDetails={closeEpisodeDetails}
+        drawer={episodeDetailsDrawer}
+        details={details(episode.id)}
+      />
+    </React.Fragment>
   );
 };

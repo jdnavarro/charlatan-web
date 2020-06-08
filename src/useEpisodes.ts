@@ -15,6 +15,7 @@ export const useEpisodes = (): {
   currentify: (id: string) => void;
   toggle: () => void;
   setProgress: (progress: number) => void;
+  details: (id: string) => Feed.Details;
 } => {
   const [_episodes, setEpisodes] = React.useState<episode.Dict>(new Map());
 
@@ -149,7 +150,29 @@ export const useEpisodes = (): {
     }
   };
 
-  return { feed, queue, enqueue, current, currentify, toggle, setProgress };
+  const details = (id: string): Feed.Details => {
+    const {
+      title,
+      progress,
+      duration,
+      publication,
+      image,
+      queued,
+      notes,
+    } = _episodes.get(id)!;
+    return { id, title, progress, duration, publication, image, notes, queued };
+  };
+
+  return {
+    feed,
+    queue,
+    enqueue,
+    current,
+    currentify,
+    toggle,
+    setProgress,
+    details,
+  };
 };
 
 const unpack = (

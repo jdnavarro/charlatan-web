@@ -16,14 +16,14 @@ export type Full = Omit<
   feed.Episode &
     queue.Episode &
     current.Episode &
-    current.Details &
-    Details &
+    feed.Details &
+    // Details &
     api.Episode,
   "id" | "playing"
 >;
 
 export type Dict = Map<string, Full>;
 
-export interface Details extends current.Details {
-  queued: boolean;
-}
+// export interface Details extends current.Details {
+//   queued: boolean;
+// }

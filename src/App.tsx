@@ -3,7 +3,7 @@ import { Router } from "@reach/router";
 
 import { enableMapSet } from "immer";
 
-import { Container, CssBaseline } from "@material-ui/core";
+import { CssBaseline } from "@material-ui/core";
 
 import { Nav } from "./Nav";
 import Podcasts from "./Podcast";
@@ -16,7 +16,15 @@ enableMapSet();
 export const App: React.FC = () => {
   const [drawer, setDrawer] = React.useState<boolean>(false);
 
-  const { feed, queue, enqueue, current, toggle, setProgress } = useEpisodes();
+  const {
+    feed,
+    queue,
+    enqueue,
+    current,
+    toggle,
+    setProgress,
+    details,
+  } = useEpisodes();
 
   const openDrawer = (): void => {
     setDrawer(true);
@@ -29,25 +37,24 @@ export const App: React.FC = () => {
   return (
     <React.Fragment>
       <CssBaseline />
-      <Container maxWidth="sm">
-        <Nav closeDrawer={closeDrawer} drawer={drawer} />
-        <Router>
-          <Feed
-            path="/"
-            openDrawer={openDrawer}
-            episodes={feed}
-            enqueue={enqueue}
-          />
-          <Podcasts path="podcasts" openDrawer={openDrawer} />
-        </Router>
-        <Player
-          queue={queue}
+      <Nav closeDrawer={closeDrawer} drawer={drawer} />
+      <Router>
+        <Feed
+          path="/"
+          openDrawer={openDrawer}
+          episodes={feed}
           enqueue={enqueue}
-          current={current}
-          toggle={toggle}
-          setProgress={setProgress}
+          details={details}
         />
-      </Container>
+        <Podcasts path="podcasts" openDrawer={openDrawer} />
+      </Router>
+      <Player
+        queue={queue}
+        enqueue={enqueue}
+        current={current}
+        toggle={toggle}
+        setProgress={setProgress}
+      />
     </React.Fragment>
   );
 };
