@@ -8,22 +8,13 @@ export interface Core {
   title: string;
   progress: number;
   duration: number;
-  publication: Date;
+  publication: number;
   image: URL;
 }
 
 export type Full = Omit<
-  feed.Episode &
-    queue.Episode &
-    current.Episode &
-    feed.Details &
-    // Details &
-    api.Episode,
+  feed.Episode & queue.Episode & current.Episode & feed.Details & api.Episode,
   "id" | "playing"
 >;
 
 export type Dict = Map<string, Full>;
-
-// export interface Details extends current.Details {
-//   queued: boolean;
-// }

@@ -160,7 +160,16 @@ export const useEpisodes = (): {
       queued,
       notes,
     } = _episodes.get(id)!;
-    return { id, title, progress, duration, publication, image, notes, queued };
+    return {
+      id,
+      title,
+      progress,
+      duration,
+      publication,
+      image,
+      notes,
+      queued,
+    };
   };
 
   return {
