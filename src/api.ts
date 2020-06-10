@@ -1,3 +1,5 @@
+import axios from "axios";
+
 import type * as episode from "./episode";
 
 export interface Episode extends episode.Core {
@@ -11,18 +13,10 @@ const api_url =
     ? process.env.REACT_APP_API_URL || ""
     : "";
 
-// TODO: Handle errors
 export const progress = async (id: string, progress: number): Promise<void> => {
-  await fetch(`${api_url}/episodes/${id}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ progress: Math.round(progress) }),
-  });
+  axios.patch(`${api_url}/episodes/${id}`, { progress: Math.round(progress) });
 };
 
-// TODO: Handle errors
 export const position = async (
   id: string,
   position: number | null | undefined
@@ -30,33 +24,17 @@ export const position = async (
   if (position === undefined) {
     position = 0;
   }
-
-  await fetch(`${api_url}/episodes/${id}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ position }),
-  });
+  axios.patch(`${api_url}/episodes/${id}`, { position });
 };
 
-export const episodes = async (): Promise<Episodes> => {
-  try {
-    const response = await fetch(`${api_url}/episodes`);
-    const data = await response.json();
-    return data;
-  } catch (err) {
-    console.error(err);
-    return new Map();
-  }
-};
+export const episodes = async (): Promise<Episodes> =>
+  axios
+    .get(`${api_url}/episodes`)
+    .then(({ data }) => data)
+    .catch((err) => {
+      console.error(err.message);
+      return new Map();
+    });
 
-export const podcast = async (url: String): Promise<void> => {
-  fetch("/podcasts", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(url),
-  });
-};
+export const podcast = async (url: String): Promise<void> =>
+  axios.post(`${api_url}/podcasts`, { url });
