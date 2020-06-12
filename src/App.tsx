@@ -48,13 +48,15 @@ export const App: React.FC = () => {
         />
         <Podcasts path="podcasts" openDrawer={openDrawer} />
       </Router>
-      <Player
-        queue={queue}
-        enqueue={enqueue}
-        current={current}
-        toggle={toggle}
-        setProgress={setProgress}
-      />
+      {current ? (
+        <Player
+          queue={queue}
+          enqueue={enqueue}
+          current={current}
+          toggle={toggle}
+          setProgress={setProgress}
+        />
+      ) : null}
     </React.Fragment>
   );
 };

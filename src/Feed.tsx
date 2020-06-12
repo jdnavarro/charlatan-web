@@ -37,9 +37,8 @@ export const Feed: React.FC<Props> = (props) => {
         <Toolbar />
         <List>
           {episodes.map((episode, key) => (
-            <React.Fragment>
+            <React.Fragment key={key}>
               <EpisodeItem
-                key={key}
                 episode={episode}
                 enqueue={enqueue}
                 details={details}
@@ -54,7 +53,6 @@ export const Feed: React.FC<Props> = (props) => {
 };
 
 const EpisodeItem: React.FC<{
-  key: number;
   episode: Episode;
   enqueue: (id: string, pos?: number | null) => void;
   details: (id: string) => Details;

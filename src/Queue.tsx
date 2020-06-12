@@ -14,7 +14,7 @@ import { Episodes, Episode } from "./queue";
 
 interface Props {
   drawer: boolean;
-  closeQueue: () => void;
+  closeQueue: (e: any) => void;
   episodes: Episodes;
   enqueue: (id: string, pos?: number | null) => void;
 }
