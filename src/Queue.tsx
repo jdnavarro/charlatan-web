@@ -1,9 +1,11 @@
 import React from "react";
 
 import {
+  Avatar,
   Drawer,
   List,
   ListItem,
+  ListItemAvatar,
   ListItemText,
   ListItemSecondaryAction,
   IconButton,
@@ -46,7 +48,17 @@ const EpisodeItem: React.FC<{
 
   return (
     <ListItem>
-      <ListItemText primary={episode.title} />
+      <ListItemAvatar>
+        <Avatar alt={episode.id} src={episode.image.toString()} />
+      </ListItemAvatar>
+      <ListItemText
+        primary={episode.title}
+        secondary={
+          new Date(Number(episode.publication) * 1000).toDateString() +
+          " -- " +
+          new Date(Number(episode.duration * 1000)).toISOString().substr(11, 8)
+        }
+      />
       <ListItemSecondaryAction>
         <IconButton onClick={handleEnqueue}>
           <ArrowUpwardIcon />
