@@ -35,6 +35,3 @@ export const episodes = async (): Promise<Episodes> =>
       console.error(err.message);
       return new Map();
     });
-
-export const podcast = async (url: String): Promise<void> =>
-  axios.post(`${api_url}/podcasts`, { url });

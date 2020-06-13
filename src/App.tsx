@@ -6,7 +6,7 @@ import { enableMapSet } from "immer";
 import { CssBaseline } from "@material-ui/core";
 
 import { Nav } from "./Nav";
-import Podcasts from "./Podcast";
+import { Podcasts } from "./podcast/Podcasts";
 import { Feed } from "./Feed";
 import { Player } from "./Player";
 import { useEpisodes } from "./useEpisodes";

@@ -3,21 +3,24 @@ import React from "react";
 import { Toolbar, TextField, Button } from "@material-ui/core";
 import SaveIcon from "@material-ui/icons/Save";
 
-import { TopBar } from "./TopBar";
-import * as API from "./api";
+import { TopBar } from "../TopBar";
+import { usePodcasts } from "./usePodcasts";
+import * as api from "./api";
 
 interface Props {
   openDrawer: () => void;
   path: string;
 }
 
-export default (props: Props) => {
+export const Podcasts = (props: Props) => {
+  const { podcasts } = usePodcasts();
+
   const { openDrawer } = props;
 
   const [url, setUrl] = React.useState("");
 
   const handleSubmit = (): void => {
-    API.podcast(url);
+    api.podcast(url);
   };
 
   return (
