@@ -1,11 +1,12 @@
 import React from "react";
 
-import { Toolbar, TextField, Button } from "@material-ui/core";
+import { Toolbar, TextField, Button, List } from "@material-ui/core";
 import SaveIcon from "@material-ui/icons/Save";
 
 import { TopBar } from "../TopBar";
 import { usePodcasts } from "./usePodcasts";
 import * as api from "./api";
+import { Item } from "./Item";
 
 interface Props {
   openDrawer: () => void;
@@ -45,6 +46,14 @@ export const Podcasts = (props: Props) => {
         >
           Add
         </Button>
+
+        <List>
+          {podcasts.map((podcast, key) => (
+            <React.Fragment key={key}>
+              <Item podcast={podcast} />
+            </React.Fragment>
+          ))}
+        </List>
       </main>
     </React.Fragment>
   );
