@@ -5,3 +5,7 @@ export interface Podcast {
   description: string;
   image: string;
 }
+
+export type Podcasts = {
+  [id: string]: Podcast;
+};

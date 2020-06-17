@@ -1,21 +1,30 @@
 import React from "react";
 import produce from "immer";
 
-import { Podcast } from "./podcast";
+import { Podcast, Podcasts } from "./podcast";
 import * as api from "./api";
 
 export const usePodcasts = (): {
   podcasts: Podcast[];
+  remove: (id: string) => void;
 } => {
-  const [podcasts, setPodcasts] = React.useState<Podcast[]>([]);
+  const [_podcasts, setPodcasts] = React.useState<Podcasts>({});
 
   React.useEffect(() => {
     (async () => {
       const apiPodcasts = await api.podcasts();
       setPodcasts(apiPodcasts);
-      console.log(apiPodcasts);
     })();
   }, []);
 
-  return { podcasts };
+  const remove = (id: string) => {
+    const p = produce(_podcasts, (draft) => {
+      delete draft[id];
+    });
+    setPodcasts(p);
+    // TODO: Delete episodes of podcasts in UI
+    api.remove(id);
+  };
+
+  return { podcasts: Object.values(_podcasts), remove };
 };

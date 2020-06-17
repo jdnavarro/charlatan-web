@@ -14,7 +14,7 @@ interface Props {
 }
 
 export const Podcasts = (props: Props) => {
-  const { podcasts } = usePodcasts();
+  const { podcasts, remove } = usePodcasts();
 
   const { openDrawer } = props;
 
@@ -50,7 +50,7 @@ export const Podcasts = (props: Props) => {
         <List>
           {podcasts.map((podcast, key) => (
             <React.Fragment key={key}>
-              <Item podcast={podcast} />
+              <Item podcast={podcast} remove={remove} />
             </React.Fragment>
           ))}
         </List>
