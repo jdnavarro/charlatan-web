@@ -9,9 +9,6 @@ interface Props {
   details: Details;
 }
 
-// export const formatPublication = (timestamp: number): string =>
-//   new Date(Number(timestamp * 1000)).toDateString();
-//
 export const EpisodeDetails: React.FC<Props> = (props) => {
   const { closeEpisodeDetails, drawer, details } = props;
 

@@ -27,11 +27,15 @@ export const position = async (
   axios.patch(`${api_url}/episodes/${id}`, { position });
 };
 
-export const episodes = async (): Promise<Episodes> =>
-  axios
-    .get(`${api_url}/episodes`)
+export const episodes = async (): Promise<Episodes> => {
+  const token = localStorage.getItem("token");
+  return axios
+    .get(`${api_url}/episodes`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
     .then(({ data }) => data)
     .catch((err) => {
       console.error(err.message);
       return new Map();
     });
+};

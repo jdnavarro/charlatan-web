@@ -6,6 +6,8 @@ import { enableMapSet } from "immer";
 import { CssBaseline } from "@material-ui/core";
 
 import { Nav } from "./Nav";
+import { Login } from "./auth/Login";
+import { Register } from "./auth/Register";
 import { Podcasts } from "./podcast/Podcasts";
 import { Feed } from "./Feed";
 import { Player } from "./Player";
@@ -47,6 +49,8 @@ export const App: React.FC = () => {
           details={details}
         />
         <Podcasts path="podcasts" openDrawer={openDrawer} />
+        <Login path="login" />
+        <Register path="register" />
       </Router>
       {current ? (
         <Player
