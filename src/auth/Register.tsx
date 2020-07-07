@@ -1,8 +1,10 @@
 import React from "react";
+import { navigate } from "@reach/router";
 
 import { TextField, Button } from "@material-ui/core";
 
 import * as api from "./api";
+import { AuthContext } from "./context";
 
 interface Props {
   path: string;
@@ -12,6 +14,8 @@ export const Register = (props: Props) => {
   const [email, updateEmail] = React.useState("");
 
   const [password, updatePassword] = React.useState("");
+
+  const { setToken } = React.useContext(AuthContext);
 
   const handleUserChange = (e: any) => {
     updateEmail(e.target.value);
@@ -23,7 +27,10 @@ export const Register = (props: Props) => {
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
-    api.register(email, password);
+    api.register(email, password).then(() => {
+      api.login(email, password).then((token) => setToken(token));
+    });
+    navigate("/");
   };
 
   return (

@@ -7,6 +7,7 @@ import { TopBar } from "../TopBar";
 import { usePodcasts } from "./usePodcasts";
 import * as api from "./api";
 import { Item } from "./Item";
+import { AuthContext } from "../auth/context";
 
 interface Props {
   openDrawer: () => void;
@@ -14,14 +15,16 @@ interface Props {
 }
 
 export const Podcasts = (props: Props) => {
-  const { podcasts, remove } = usePodcasts();
+  const { token } = React.useContext(AuthContext);
+
+  const { podcasts, remove } = usePodcasts(token);
 
   const { openDrawer } = props;
 
   const [url, setUrl] = React.useState("");
 
   const handleSubmit = (): void => {
-    api.podcast(url);
+    api.add(token, url);
   };
 
   return (

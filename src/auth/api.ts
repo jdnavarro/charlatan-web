@@ -14,10 +14,4 @@ export const login = (name: string, password: string) =>
       name,
       password,
     })
-    .then((response) => {
-      console.log(response.data);
-      if (response.data) {
-        localStorage.setItem("token", response.data);
-      }
-      window.location.assign("/");
-    });
+    .then(({ data }) => data);

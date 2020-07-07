@@ -4,7 +4,9 @@ import produce from "immer";
 import { Podcast, Podcasts } from "./podcast";
 import * as api from "./api";
 
-export const usePodcasts = (): {
+export const usePodcasts = (
+  token: string
+): {
   podcasts: Podcast[];
   remove: (id: string) => void;
 } => {
@@ -12,18 +14,18 @@ export const usePodcasts = (): {
 
   React.useEffect(() => {
     (async () => {
-      const apiPodcasts = await api.podcasts();
+      const apiPodcasts = await api.list(token);
       setPodcasts(apiPodcasts);
     })();
-  }, []);
+  }, [token]);
 
   const remove = (id: string) => {
     const p = produce(_podcasts, (draft) => {
       delete draft[id];
     });
     setPodcasts(p);
-    // TODO: Delete episodes of podcasts in UI
-    api.remove(id);
+    // TODO: Delete episodes of podcasts in State UI
+    api.remove(token, id);
   };
 
   return { podcasts: Object.values(_podcasts), remove };

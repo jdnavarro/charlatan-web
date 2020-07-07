@@ -1,4 +1,5 @@
 import axios from "axios";
+import { navigate } from "@reach/router";
 
 import type * as episode from "./episode";
 
@@ -18,24 +19,39 @@ export const progress = async (id: string, progress: number): Promise<void> => {
 };
 
 export const position = async (
+  token: string,
   id: string,
   position: number | null | undefined
 ): Promise<void> => {
   if (position === undefined) {
     position = 0;
   }
-  axios.patch(`${api_url}/episodes/${id}`, { position });
+  axios
+    .patch(`${api_url}/episodes/${id}`, {
+      data: position,
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .catch(handleError);
 };
 
-export const episodes = async (): Promise<Episodes> => {
-  const token = localStorage.getItem("token");
+export const episodes = async (token: string): Promise<Episodes> => {
   return axios
     .get(`${api_url}/episodes`, {
       headers: { Authorization: `Bearer ${token}` },
     })
     .then(({ data }) => data)
     .catch((err) => {
-      console.error(err.message);
+      handleError(err);
       return new Map();
     });
+};
+
+const handleError = (err: any) => {
+  if (err.response.data.type === "Unconfigured") {
+    navigate("/register");
+  } else if (err.response.data.type === "UnverifiedToken") {
+    navigate("/login");
+  } else {
+    console.error(err.message);
+  }
 };

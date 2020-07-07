@@ -1,20 +1,21 @@
 import React from "react";
-import { Link as RouterLink } from "@reach/router";
+import { navigate } from "@reach/router";
 
-import { TextField, Button, Link } from "@material-ui/core";
+import { TextField, Button } from "@material-ui/core";
 
 import * as api from "./api";
+import { AuthContext } from "./context";
 
 interface Props {
   path: string;
 }
 
 export const Login = (props: Props) => {
-  const path = props;
-
   const [email, updateEmail] = React.useState("");
 
   const [password, updatePassword] = React.useState("");
+
+  const { setToken } = React.useContext(AuthContext);
 
   const handleUserChange = (e: any) => {
     updateEmail(e.target.value);
@@ -26,7 +27,8 @@ export const Login = (props: Props) => {
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
-    api.login(email, password);
+    api.login(email, password).then((token) => setToken(token));
+    navigate("/");
   };
 
   return (
@@ -58,25 +60,6 @@ export const Login = (props: Props) => {
       <Button type="submit" fullWidth variant="contained" color="primary">
         Sign In
       </Button>
-      <RegisterLink to="/register">{"Sign Up"}</RegisterLink>
     </form>
-  );
-};
-
-const RegisterLink: React.FC<{ to: string }> = (props) => {
-  const { to } = props;
-
-  const renderLink = React.useMemo(
-    () =>
-      React.forwardRef<any, Omit<any, "to">>((itemProps, ref) => (
-        <RouterLink to={to} ref={ref} {...itemProps} />
-      )),
-    [to]
-  );
-
-  return (
-    <Link component={renderLink} variant="body2">
-      {"Don't have an account? Sign Up"}
-    </Link>
   );
 };

@@ -1,20 +1,40 @@
 import axios from "axios";
+import { navigate } from "@reach/router";
 
 import { API_URL } from "../constants";
 
 import { Podcasts } from "./podcast";
 
-export const podcasts = async (): Promise<Podcasts> =>
+export const list = (token: string): Promise<Podcasts> =>
   axios
-    .get(`${API_URL}/podcasts`)
+    .get(`${API_URL}/podcasts`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
     .then(({ data }) => data)
-    .catch((err) => {
-      console.error(err.message);
-      return {};
-    });
+    .catch((err) => handleError({}, err));
 
-export const podcast = async (url: string): Promise<void> =>
-  axios.post(`${API_URL}/podcasts`, { url });
+export const add = (token: string, url: string): Promise<void> =>
+  axios({
+    method: "post",
+    url: `${API_URL}/podcasts`,
+    data: { url },
+    headers: { Authorization: `Bearer ${token}` },
+  }).catch((err) => handleError(undefined, err));
 
-export const remove = async (id: string): Promise<void> =>
-  axios.delete(`${API_URL}/podcasts/${id}`);
+export const remove = (token: string, id: string): Promise<void> =>
+  axios
+    .delete(`${API_URL}/podcasts/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .catch((err) => handleError(undefined, err));
+
+const handleError = (r: any, err: any) => {
+  if (err.response.data.type === "Unconfigured") {
+    navigate("/register");
+  } else if (err.response.data.type === "UnverifiedToken") {
+    navigate("/login");
+  } else {
+    console.error(err.message);
+    return r;
+  }
+};

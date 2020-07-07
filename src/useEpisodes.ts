@@ -1,13 +1,15 @@
 import React from "react";
 import produce from "immer";
 
-import * as API from "./api";
+import * as api from "./api";
 import type * as Current from "./current";
 import type * as Feed from "./feed";
 import type * as Queue from "./queue";
 import type * as episode from "./episode";
 
-export const useEpisodes = (): {
+export const useEpisodes = (
+  token: string
+): {
   feed: Feed.Episodes;
   queue: Queue.Episodes;
   enqueue: (id: string, pos?: number | null) => void;
@@ -25,13 +27,13 @@ export const useEpisodes = (): {
 
   React.useEffect(() => {
     (async () => {
-      const apiEpisodes = await API.episodes();
+      const apiEpisodes = await api.episodes(token);
       const { episodes, queue, current } = unpack(apiEpisodes);
       setEpisodes(episodes);
       setQueue(queue);
       setCurrent(current);
     })();
-  }, []);
+  }, [token]);
 
   const enqueue = (id: string, position?: number | null): void => {
     if (position === null) {
@@ -80,7 +82,7 @@ export const useEpisodes = (): {
         })
       );
     }
-    API.position(id, position);
+    api.position(token, id, position);
   };
 
   const currentify = (id: string): void => {
@@ -146,7 +148,7 @@ export const useEpisodes = (): {
           draft.set(current.id, { ...draft.get(current.id)!, progress });
         })
       );
-      API.progress(current.id, progress);
+      api.progress(current.id, progress);
     }
   };
 
@@ -185,7 +187,7 @@ export const useEpisodes = (): {
 };
 
 const unpack = (
-  apiEpisodes: API.Episodes
+  apiEpisodes: api.Episodes
 ): {
   episodes: episode.Dict;
   queue: Queue.Ids;
