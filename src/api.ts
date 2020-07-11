@@ -1,6 +1,7 @@
 import axios from "axios";
 import { navigate } from "@reach/router";
 
+import { API_URL } from "./constants";
 import type * as episode from "./episode";
 
 export interface Episode extends episode.Core {
@@ -9,34 +10,29 @@ export interface Episode extends episode.Core {
 
 export type Episodes = Map<string, Episode>;
 
-const api_url =
-  process.env.NODE_ENV === "production"
-    ? process.env.REACT_APP_API_URL || ""
-    : "";
-
-export const progress = async (id: string, progress: number): Promise<void> => {
-  axios.patch(`${api_url}/episodes/${id}`, { progress: Math.round(progress) });
+export const progress = (id: string, progress: number) => {
+  axios.patch(`${API_URL}/episodes/${id}`, { progress: Math.round(progress) });
 };
 
-export const position = async (
+export const position = (
   token: string,
   id: string,
   position: number | null | undefined
-): Promise<void> => {
+) => {
   if (position === undefined) {
     position = 0;
   }
   axios
-    .patch(`${api_url}/episodes/${id}`, {
+    .patch(`${API_URL}/episodes/${id}`, {
       data: position,
       headers: { Authorization: `Bearer ${token}` },
     })
     .catch(handleError);
 };
 
-export const episodes = async (token: string): Promise<Episodes> => {
-  return axios
-    .get(`${api_url}/episodes`, {
+export const episodes = (token: string): Promise<Episodes> =>
+  axios
+    .get(`${API_URL}/episodes`, {
       headers: { Authorization: `Bearer ${token}` },
     })
     .then(({ data }) => data)
@@ -44,6 +40,16 @@ export const episodes = async (token: string): Promise<Episodes> => {
       handleError(err);
       return new Map();
     });
+
+// Explicit refreshing will eventually go away
+export const refresh = (token: string) => {
+  axios({
+    method: "post",
+    url: `${API_URL}/crawl`,
+    headers: { Authorization: `Bearer ${token}` },
+  })
+    .then(() => window.location.reload())
+    .catch(handleError);
 };
 
 const handleError = (err: any) => {

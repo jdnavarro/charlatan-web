@@ -1,3 +1,3 @@
 ## Charlatan Web
 
-This is the web client for [`charlatan-server`](https://github.com/jdnavarro/charlatan-server).
+This is the web client for [`charlatan`](https://github.com/jdnavarro/charlatan).
