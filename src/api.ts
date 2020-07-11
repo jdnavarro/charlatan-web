@@ -10,8 +10,13 @@ export interface Episode extends episode.Core {
 
 export type Episodes = Map<string, Episode>;
 
-export const progress = (id: string, progress: number) => {
-  axios.patch(`${API_URL}/episodes/${id}`, { progress: Math.round(progress) });
+export const progress = (token: string, id: string, progress: number) => {
+  axios({
+    method: "patch",
+    url: `${API_URL}/episodes/${id}`,
+    data: { progress: Math.round(progress) },
+    headers: { Authorization: `Bearer ${token}` },
+  });
 };
 
 export const position = (
@@ -22,12 +27,12 @@ export const position = (
   if (position === undefined) {
     position = 0;
   }
-  axios
-    .patch(`${API_URL}/episodes/${id}`, {
-      data: position,
-      headers: { Authorization: `Bearer ${token}` },
-    })
-    .catch(handleError);
+  axios({
+    method: "patch",
+    url: `${API_URL}/episodes/${id}`,
+    data: { position },
+    headers: { Authorization: `Bearer ${token}` },
+  }).catch(handleError);
 };
 
 export const episodes = (token: string): Promise<Episodes> =>

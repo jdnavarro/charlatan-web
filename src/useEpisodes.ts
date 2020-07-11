@@ -148,7 +148,7 @@ export const useEpisodes = (
           draft.set(current.id, { ...draft.get(current.id)!, progress });
         })
       );
-      api.progress(current.id, progress);
+      api.progress(token, current.id, progress);
     }
   };
 
